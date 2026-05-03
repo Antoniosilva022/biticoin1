@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "command": "npm start",
+            "name": "Run npm start",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+
+
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Deploy to Testnet",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "deploy-testnet"
+            ],
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.env",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        }
+    ]
+}

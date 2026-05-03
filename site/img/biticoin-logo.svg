@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6a00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd200;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff2d78;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a259ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Anel externo -->
+  <circle cx="100" cy="100" r="97" fill="none" stroke="url(#ringGrad)" stroke-width="4" opacity="0.7"/>
+
+  <!-- Círculo principal -->
+  <circle cx="100" cy="100" r="90" fill="url(#bgGrad)" filter="url(#glow)"/>
+
+  <!-- Símbolo B estilizado (Bitcoin-like) -->
+  <g fill="white" transform="translate(100,100)">
+    <!-- Haste vertical -->
+    <rect x="-8" y="-38" width="10" height="76" rx="4"/>
+    <!-- Barras horizontais do B -->
+    <!-- Topo superior -->
+    <rect x="-8" y="-38" width="22" height="9" rx="4"/>
+    <!-- Meio -->
+    <rect x="-8" y="-5" width="24" height="9" rx="4"/>
+    <!-- Base inferior -->
+    <rect x="-8" y="28" width="22" height="9" rx="4"/>
+    <!-- Curva superior do B -->
+    <path d="M14,-29 Q32,-29 32,-14 Q32,4 14,4" fill="none" stroke="white" stroke-width="9" stroke-linecap="round"/>
+    <!-- Curva inferior do B -->
+    <path d="M16,4 Q36,4 36,21 Q36,37 16,37" fill="none" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  </g>
+
+  <!-- Texto BITI na parte inferior -->
+  <text x="100" y="172" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="22" fill="white" letter-spacing="6" opacity="0.95">BITI</text>
+
+  <!-- Pequenos pontos decorativos -->
+  <circle cx="30" cy="100" r="3" fill="white" opacity="0.4"/>
+  <circle cx="170" cy="100" r="3" fill="white" opacity="0.4"/>
+  <circle cx="100" cy="15" r="3" fill="white" opacity="0.4"/>
+</svg>

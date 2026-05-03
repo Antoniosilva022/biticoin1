@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biti (BITI) — A Nova Era das Criptomoedas</title>
+  <meta name="description" content="Token ERC-20 inspirado no Bitcoin, com vesting, auditoria, supply deflacionário e foco em comunidade. Compre BITI e faça parte da revolução Web3!"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --orange: #ff6a00;
+      --yellow: #ffd200;
+      --pink:   #ff2d78;
+      --cyan:   #00e5ff;
+      --purple: #a259ff;
+      --dark:   #0a0a12;
+      --card:   #13131f;
+      --text:   #f0f0f0;
+    }
+    @media (max-width: 600px) {
+      .stats, .tokenomics-grid, .links-grid { flex-direction: column !important; display: flex !important; }
+      .stat-card, .token-card, .link-card { min-width: unset !important; width: 100% !important; }
+      section { padding: 40px 5px; }
+      .contract-box { padding: 18px; }
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      background: radial-gradient(ellipse at 50% 0%, #ff6a0022 0%, transparent 70%),
+                  radial-gradient(ellipse at 80% 80%, #a259ff22 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, #00e5ff18 0%, transparent 60%);
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .logo-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: #fff;
+      box-shadow: 0 0 60px #ff6a0088, 0 0 120px #ffd20044;
+      margin-bottom: 30px;
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 60px #ff6a0088, 0 0 120px #ffd20044; }
+      50%       { box-shadow: 0 0 90px #ff6a00cc, 0 0 180px #ffd20088; }
+    }
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--orange), var(--yellow), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .tagline {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: #aaa;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+    .buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--orange), var(--pink));
+      color: #fff;
+      box-shadow: 0 4px 30px #ff6a0066;
+    }
+    .btn-primary:hover { box-shadow: 0 8px 40px #ff6a00aa; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--cyan);
+      border: 2px solid var(--cyan);
+      box-shadow: 0 4px 20px #00e5ff33;
+    }
+    .btn-secondary:hover { box-shadow: 0 8px 30px #00e5ff66; }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      padding: 60px 20px;
+      background: var(--card);
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid #ffffff18;
+      border-radius: 16px;
+      padding: 28px 40px;
+      text-align: center;
+      min-width: 200px;
+      transition: transform 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-4px); }
+    .stat-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 0.9rem; color: #888; margin-top: 6px; }
+
+    /* SECTIONS */
+    section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .gradient-orange { background: linear-gradient(90deg, var(--orange), var(--yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-cyan   { background: linear-gradient(90deg, var(--cyan), var(--purple));  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-pink   { background: linear-gradient(90deg, var(--pink), var(--purple));  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* TOKENOMICS */
+    .tokenomics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .token-card {
+      background: var(--card);
+      border: 1px solid #ffffff12;
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .token-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .token-card.orange::before { background: linear-gradient(90deg, var(--orange), var(--yellow)); }
+    .token-card.cyan::before   { background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+    .token-card.pink::before   { background: linear-gradient(90deg, var(--pink), var(--orange)); }
+    .token-card.purple::before { background: linear-gradient(90deg, var(--purple), var(--cyan)); }
+    .token-card h3 { font-size: 1rem; color: #aaa; margin-bottom: 10px; }
+    .token-card .value { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 700; color: #fff; }
+    .token-card p { font-size: 0.9rem; color: #777; margin-top: 8px; }
+
+    /* ROADMAP */
+    .roadmap { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--orange), var(--pink), var(--purple));
+    }
+    .roadmap-item {
+      display: flex;
+      gap: 24px;
+      padding: 24px 0 24px 56px;
+      position: relative;
+    }
+    .roadmap-dot {
+      position: absolute;
+      left: 10px;
+      top: 28px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      box-shadow: 0 0 16px #ff6a0088;
+    }
+    .roadmap-dot.done  { background: linear-gradient(135deg, #00e5ff, #a259ff); box-shadow: 0 0 16px #00e5ff88; }
+    .roadmap-dot.next  { background: linear-gradient(135deg, var(--pink), var(--purple)); box-shadow: 0 0 16px #ff2d7888; }
+    .roadmap-content { background: var(--card); border: 1px solid #ffffff12; border-radius: 12px; padding: 20px 24px; flex: 1; }
+    .roadmap-content h3 { font-size: 1.1rem; margin-bottom: 6px; }
+    .roadmap-content p { font-size: 0.9rem; color: #888; }
+    .badge { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-left: 10px; }
+    .badge.done { background: #00e5ff22; color: var(--cyan); }
+    .badge.pending { background: #ff2d7822; color: var(--pink); }
+    .badge.soon { background: #a259ff22; color: var(--purple); }
+
+    /* CONTRACT */
+    .contract-box {
+      background: var(--card);
+      border: 1px solid var(--orange);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 0 40px #ff6a0022;
+    }
+    .contract-box label { font-size: 0.9rem; color: #888; display: block; margin-bottom: 12px; }
+    .address {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.65rem, 1.5vw, 0.9rem);
+      color: var(--yellow);
+      word-break: break-all;
+      margin-bottom: 20px;
+    }
+
+    /* ADD TO METAMASK */
+    .metamask-btn {
+      background: linear-gradient(90deg, #e2761b, #f6851b);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px #f6851b55;
+    }
+    .metamask-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px #f6851b88; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid #ffffff0a;
+    }
+    footer a { color: var(--orange); text-decoration: none; }
+
+    /* LINKS */
+    .links-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+    .link-card {
+      background: var(--card);
+      border: 1px solid #ffffff12;
+      border-radius: 12px;
+      padding: 16px 28px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .link-card:hover { transform: translateY(-3px); border-color: var(--orange); }
+    .link-card .icon { font-size: 1.4rem; }
+
+    /* DISCLAIMER */
+    .disclaimer {
+      background: #1a0a00;
+      border: 1px solid #ff6a0033;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-size: 0.85rem;
+      color: #888;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <img src="img/biticoin-logo.svg" alt="Biticoin Logo" style="width:130px;height:130px;margin-bottom:24px;filter:drop-shadow(0 0 30px #ff6a0099);animation:pulse 3s ease-in-out infinite;"/>
+    <h1>BITI</h1>
+    <p class="tagline">Token ERC-20 inspirado no Bitcoin — rápido, transparente, deflacionário e com vesting seguro. Faça parte da nova era Web3!</p>
+    <div class="buttons">
+      <a href="https://app.uniswap.org/swap?chain=polygon&outputCurrency=0xdF9884791dFE4D7C752B5A97df84c85438264500" target="_blank" class="btn btn-primary">Comprar BITI (Polygon)</a>
+      <a href="https://polygonscan.com/address/0xdF9884791dFE4D7C752B5A97df84c85438264500#code" target="_blank" class="btn btn-secondary">Ver Contrato</a>
+    </div>
+    <div style="margin-top:24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <a href="https://t.me/biticoin_token" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">💬 Telegram</a>
+      <a href="https://discord.gg/biticoin" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">🕹️ Discord</a>
+      <a href="https://twitter.com/biticoin_token" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">🐦 Twitter</a>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-value">99B</div>
+      <div class="stat-label">Supply Inicial</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">110B</div>
+      <div class="stat-label">Supply Máximo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">0–5%</div>
+      <div class="stat-label">Taxa de Transação</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">18</div>
+      <div class="stat-label">Decimais</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">ERC-20</div>
+      <div class="stat-label">Padrão</div>
+    </div>
+  </div>
+
+  <!-- TOKENOMICS -->
+  <section>
+    <h2 class="gradient-orange">Tokenomics</h2>
+    <div class="tokenomics-grid">
+      <div class="token-card orange">
+        <h3>Supply Inicial</h3>
+        <div class="value">99.000.000.000</div>
+        <p>99 bilhões de BITI emitidos no deploy.</p>
+      </div>
+      <div class="token-card cyan">
+        <h3>Supply Máximo</h3>
+        <div class="value">110.000.000.000</div>
+        <p>Teto absoluto — nunca haverá mais de 110 bilhões de BITI.</p>
+      </div>
+      <div class="token-card pink">
+        <h3>Distribuição Inicial</h3>
+        <div class="value">80% / 20%</div>
+        <p>80% disponível imediatamente. 20% em vesting de 6 meses para o fundador.</p>
+      </div>
+      <div class="token-card purple">
+        <h3>Taxa de Transação</h3>
+        <div class="value">0% → 5% máx</div>
+        <p>Configurável pelo owner. Protegida contra abusos no contrato.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUNCIONALIDADES -->
+  <section style="background: var(--card); max-width:100%; padding: 80px 20px;">
+    <div style="max-width:1100px; margin:0 auto;">
+      <h2 class="gradient-cyan">Funcionalidades</h2>
+      <div class="tokenomics-grid">
+        <div class="token-card cyan">
+          <h3>🔒 Pausável</h3>
+          <div class="value" style="font-size:1rem;">Proteção de emergência</div>
+          <p>Transferências podem ser pausadas em caso de incidente de segurança.</p>
+        </div>
+        <div class="token-card orange">
+          <h3>🔥 Queima (Burn)</h3>
+          <div class="value" style="font-size:1rem;">Supply deflacionário</div>
+          <p>Qualquer holder pode queimar seus tokens, reduzindo o supply total.</p>
+        </div>
+        <div class="token-card pink">
+          <h3>⏳ Vesting</h3>
+          <div class="value" style="font-size:1rem;">180 dias bloqueados</div>
+          <p>20% do supply do fundador travado por 6 meses. Transparência total.</p>
+        </div>
+        <div class="token-card purple">
+          <h3>✅ Auditado</h3>
+          <div class="value" style="font-size:1rem;">OpenZeppelin v5</div>
+          <p>Baseado na biblioteca mais auditada do Ethereum. Vulnerabilidades corrigidas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <h2 class="gradient-pink">Roadmap</h2>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-dot done"></div>
+        <div class="roadmap-content">
+          <h3>Fase 1 — Criação <span class="badge done">Concluído</span></h3>
+          <p>Desenvolvimento do contrato ERC-20, testes unitários (25/25), auditoria interna e deploy na Sepolia testnet.</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot next"></div>
+        <div class="roadmap-content">
+          <h3>Fase 2 — Lançamento <span class="badge done">Concluído</span></h3>
+          <p>Deploy na Polygon Mainnet, verificação no Polygonscan, pool de liquidez criado no Uniswap V3 (POL/BITI), token negociável.</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-content">
+          <h3>Fase 3 — Comunidade <span class="badge soon">Planejado</span></h3>
+          <p>Criação de Discord e Telegram, airdrop para early adopters, parcerias com projetos DeFi, campanha de marketing.</p>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-dot"></div>
+        <div class="roadmap-content">
+          <h3>Fase 4 — Expansão <span class="badge soon">Planejado</span></h3>
+          <p>Staking de BITI, governança DAO, listagem em exchanges centralizadas, auditoria profissional certificada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTRATO -->
+  <section>
+    <h2 class="gradient-orange">Contrato</h2>
+    <div class="contract-box">
+      <label>Endereço do Contrato (Polygon Mainnet)</label>
+      <div class="address">0xdF9884791dFE4D7C752B5A97df84c85438264500</div>
+      <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+        <button class="metamask-btn" onclick="addToMetaMask()">🦊 Adicionar à MetaMask</button>
+        <a href="https://polygonscan.com/address/0xdF9884791dFE4D7C752B5A97df84c85438264500#code" target="_blank" class="btn btn-secondary">Ver no Polygonscan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LINKS -->
+  <section>
+    <h2 class="gradient-cyan">Links Oficiais</h2>
+    <div class="links-grid">
+      <a href="https://polygonscan.com/address/0xdF9884791dFE4D7C752B5A97df84c85438264500#code" target="_blank" class="link-card">
+        <span class="icon">🔍</span> Polygonscan
+      </a>
+      <a href="https://app.uniswap.org/swap?chain=polygon&outputCurrency=0xdF9884791dFE4D7C752B5A97df84c85438264500" target="_blank" class="link-card">
+        <span class="icon">🦄</span> Uniswap
+      </a>
+      <a href="whitepaper/whitepaper-pt.html" class="link-card">
+        <span class="icon">📄</span> Whitepaper PT
+      </a>
+      <a href="whitepaper/whitepaper-en.html" class="link-card">
+        <span class="icon">📄</span> Whitepaper EN
+      </a>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section>
+    <div class="disclaimer">
+      ⚠️ <strong>Aviso:</strong> O Biti é um projeto experimental em desenvolvimento, sem garantias de retorno financeiro. Não constitui oferta de investimento. Sempre faça sua própria pesquisa (DYOR) antes de adquirir tokens de criptomoeda. O time não se responsabiliza por perdas.
+    </div>
+  </section>
+
+  <!-- COMO COMPRAR -->
+  <section id="como-comprar" style="background: var(--card); max-width:100%; padding: 80px 20px;">
+    <div style="max-width:900px; margin:0 auto;">
+      <h2 class="gradient-orange">Como Comprar BITI</h2>
+      <div style="display:flex; flex-direction:column; gap:0; position:relative;">
+
+        <!-- Linha vertical conectora -->
+        <div style="position:absolute; left:28px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, var(--orange), var(--pink), var(--purple));"></div>
+
+        <!-- Passo 1 -->
+        <div style="display:flex; gap:24px; padding:0 0 32px 72px; position:relative;">
+          <div style="position:absolute; left:14px; top:0; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#ff6a00,#ffd200); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; color:#fff; box-shadow:0 0 16px #ff6a0088;">1</div>
+          <div style="background:#1a1a2e; border:1px solid #ffffff15; border-radius:14px; padding:22px 24px; flex:1;">
+            <h3 style="margin-bottom:8px; font-size:1.1rem;">🦊 Instale a MetaMask</h3>
+            <p style="color:#888; font-size:0.95rem;">Acesse <a href="https://metamask.io" target="_blank" style="color:var(--orange);">metamask.io</a> e instale a extensão no seu navegador (Chrome, Firefox ou Brave). Crie sua carteira e anote a frase de recuperação em local seguro.</p>
+          </div>
+        </div>
+
+        <!-- Passo 2 -->
+        <div style="display:flex; gap:24px; padding:0 0 32px 72px; position:relative;">
+          <div style="position:absolute; left:14px; top:0; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#ffd200,#ff2d78); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; color:#fff; box-shadow:0 0 16px #ffd20088;">2</div>
+          <div style="background:#1a1a2e; border:1px solid #ffffff15; border-radius:14px; padding:22px 24px; flex:1;">
+            <h3 style="margin-bottom:8px; font-size:1.1rem;">💎 Compre ETH</h3>
+            <p style="color:#888; font-size:0.95rem;">Você precisa de POL (Polygon) para trocar por BITI e pagar o gas. Compre POL em exchanges como <strong style="color:#fff;">Coinbase</strong>, <strong style="color:#fff;">Binance</strong> ou <strong style="color:#fff;">Mercado Bitcoin</strong> e envie para sua carteira MetaMask na rede Polygon.</p>
+          </div>
+        </div>
+
+        <!-- Passo 3 -->
+        <div style="display:flex; gap:24px; padding:0 0 32px 72px; position:relative;">
+          <div style="position:absolute; left:14px; top:0; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#ff2d78,#a259ff); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; color:#fff; box-shadow:0 0 16px #ff2d7888;">3</div>
+          <div style="background:#1a1a2e; border:1px solid #ffffff15; border-radius:14px; padding:22px 24px; flex:1;">
+            <h3 style="margin-bottom:8px; font-size:1.1rem;">🦄 Acesse o Uniswap</h3>
+            <p style="color:#888; font-size:0.95rem;">Vá para <a href="https://app.uniswap.org" target="_blank" style="color:var(--cyan);">app.uniswap.org</a> e conecte sua MetaMask. Certifique-se de estar na rede <strong style="color:#fff;">Polygon Mainnet</strong>.</p>
+          </div>
+        </div>
+
+        <!-- Passo 4 -->
+        <div style="display:flex; gap:24px; padding:0 0 32px 72px; position:relative;">
+          <div style="position:absolute; left:14px; top:0; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#a259ff,#00e5ff); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; color:#fff; box-shadow:0 0 16px #a259ff88;">4</div>
+          <div style="background:#1a1a2e; border:1px solid #ffffff15; border-radius:14px; padding:22px 24px; flex:1;">
+            <h3 style="margin-bottom:8px; font-size:1.1rem;">🔄 Troque ETH por BITI</h3>
+            <p style="color:#888; font-size:0.95rem;">No Uniswap, clique em <strong style="color:#fff;">"Select token"</strong> e cole o endereço do contrato:</p>
+            <div style="background:#0a0a12; border:1px solid #ff6a0044; border-radius:8px; padding:10px 14px; font-family:monospace; font-size:0.8rem; color:var(--yellow); margin-top:10px; word-break:break-all;">0xdF9884791dFE4D7C752B5A97df84c85438264500</div>
+            <p style="color:#888; font-size:0.95rem; margin-top:10px;">Digite a quantidade de ETH e clique em <strong style="color:#fff;">Swap</strong>. Confirme na MetaMask.</p>
+          </div>
+        </div>
+
+        <!-- Passo 5 -->
+        <div style="display:flex; gap:24px; padding:0 0 0 72px; position:relative;">
+          <div style="position:absolute; left:14px; top:0; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#00e5ff,#ff6a00); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; color:#fff; box-shadow:0 0 16px #00e5ff88;">5</div>
+          <div style="background:#1a1a2e; border:1px solid #ffffff15; border-radius:14px; padding:22px 24px; flex:1;">
+            <h3 style="margin-bottom:8px; font-size:1.1rem;">✅ Adicione BITI à MetaMask</h3>
+            <p style="color:#888; font-size:0.95rem;">Clique no botão abaixo para ver seu saldo de BITI diretamente na MetaMask!</p>
+            <button class="metamask-btn" onclick="addToMetaMask()" style="margin-top:14px;">🦊 Adicionar BITI à MetaMask</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <h2 class="gradient-orange">Perguntas Frequentes (FAQ)</h2>
+    <div class="tokenomics-grid">
+      <div class="token-card orange">
+        <h3>Como adiciono o BITI na MetaMask?</h3>
+        <p>Clique no botão “Adicionar à MetaMask” na seção Contrato. Confirme na extensão.</p>
+      </div>
+      <div class="token-card cyan">
+        <h3>Em qual rede o BITI está?</h3>
+        <p>O BITI está na Polygon Mainnet, uma rede rápida e barata compatível com Ethereum. Troque POL por BITI no Uniswap V3.</p>
+      </div>
+      <div class="token-card pink">
+        <h3>O contrato é auditado?</h3>
+        <p>Sim, o contrato utiliza OpenZeppelin v5, passou por auditoria interna e todos os testes foram aprovados.</p>
+      </div>
+      <div class="token-card purple">
+        <h3>Como funciona o vesting?</h3>
+        <p>20% do supply inicial fica bloqueado por 6 meses para o fundador, garantindo transparência e segurança.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Biti (BITI) — Construído com ❤️ na Polygon</p>
+    <p style="margin-top:8px;">Contrato verificado no <a href="https://polygonscan.com/address/0xdF9884791dFE4D7C752B5A97df84c85438264500#code" target="_blank">Polygonscan</a></p>
+  </footer>
+
+  <script>
+    async function addToMetaMask() {
+      if (typeof window.ethereum === 'undefined') {
+        alert('MetaMask não encontrada! Instale em https://metamask.io');
+        return;
+      }
+      try {
+        await window.ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: '0xdF9884791dFE4D7C752B5A97df84c85438264500',
+              symbol: 'BITI',
+              decimals: 18,
+              image: window.location.origin + '/img/biticoin-logo.svg'
+            }
+          }
+        });
+      } catch (err) {
+        alert('Erro ao adicionar token: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>

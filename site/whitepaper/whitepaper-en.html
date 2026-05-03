@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Whitepaper — Biti (BITI)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --orange:#ff6a00; --yellow:#ffd200; --pink:#ff2d78; --cyan:#00e5ff; --purple:#a259ff; --dark:#0a0a12; --card:#13131f; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--dark); color:#e0e0e0; font-family:'Inter',sans-serif; font-size:1rem; line-height:1.8; }
+    header { text-align:center; padding:60px 20px 40px; border-bottom:1px solid #ffffff0f; background:radial-gradient(ellipse at 50% 0%,#ff6a0018 0%,transparent 70%); }
+    .logo { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--orange),var(--yellow)); display:inline-flex; align-items:center; justify-content:center; font-family:'Orbitron',sans-serif; font-size:28px; font-weight:900; color:#fff; box-shadow:0 0 40px #ff6a0066; margin-bottom:20px; }
+    h1 { font-family:'Orbitron',sans-serif; font-size:clamp(1.8rem,4vw,3rem); background:linear-gradient(90deg,var(--orange),var(--yellow)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .subtitle { color:#888; margin-top:8px; font-size:1.1rem; }
+    .meta { color:#555; font-size:0.85rem; margin-top:16px; }
+    main { max-width:860px; margin:0 auto; padding:60px 20px; }
+    h2 { font-family:'Orbitron',sans-serif; font-size:1.5rem; margin:50px 0 16px; background:linear-gradient(90deg,var(--orange),var(--yellow)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    h3 { color:var(--cyan); font-size:1.1rem; margin:28px 0 10px; }
+    p { margin-bottom:16px; color:#ccc; }
+    ul, ol { padding-left:24px; margin-bottom:16px; color:#ccc; }
+    li { margin-bottom:8px; }
+    .highlight { background:var(--card); border-left:4px solid var(--orange); border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+    .code { font-family:monospace; background:#0d0d1a; border:1px solid #ffffff12; border-radius:8px; padding:12px 16px; font-size:0.9rem; color:var(--yellow); word-break:break-all; margin:12px 0; }
+    table { width:100%; border-collapse:collapse; margin:20px 0; }
+    th { background:var(--card); color:var(--orange); padding:12px; text-align:left; border-bottom:2px solid var(--orange); }
+    td { padding:12px; border-bottom:1px solid #ffffff0a; }
+    tr:hover td { background:#ffffff05; }
+    .badge-done { display:inline-block; background:#00e5ff22; color:var(--cyan); border-radius:20px; padding:2px 10px; font-size:0.8rem; }
+    .badge-pen  { display:inline-block; background:#ff2d7822; color:var(--pink); border-radius:20px; padding:2px 10px; font-size:0.8rem; }
+    footer { text-align:center; padding:40px 20px; color:#444; font-size:0.85rem; border-top:1px solid #ffffff0a; }
+    a { color:var(--orange); }
+    .back { display:inline-block; margin-bottom:30px; color:var(--cyan); text-decoration:none; font-weight:600; }
+    .back:hover { color:var(--orange); }
+    .toc { background:var(--card); border:1px solid #ffffff10; border-radius:12px; padding:24px 28px; margin-bottom:40px; }
+    .toc h3 { color:var(--yellow); margin-bottom:12px; }
+    .toc ol { color:#999; }
+    .toc a { color:#aaa; text-decoration:none; }
+    .toc a:hover { color:var(--orange); }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">₿</div>
+  <h1>Biti (BITI)</h1>
+  <p class="subtitle">Official Whitepaper — Version 1.0</p>
+  <p class="meta">April 2026 &nbsp;|&nbsp; Ethereum ERC-20 &nbsp;|&nbsp; Network: Sepolia → Mainnet</p>
+</header>
+
+<main>
+  <a href="../index.html" class="back">← Back to website</a>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#solution">The Solution</a></li>
+      <li><a href="#tokenomics">Tokenomics</a></li>
+      <li><a href="#technology">Technology</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#links">Links &amp; Contract</a></li>
+      <li><a href="#disclaimer">Legal Disclaimer</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. ABSTRACT -->
+  <h2 id="abstract">1. Abstract</h2>
+  <p><strong>Biti (BITI)</strong> is an ERC-20 token deployed on the Ethereum blockchain, inspired by Bitcoin's core principles of transparency, decentralization, and scarcity. With an initial supply of 99 billion units, a deflationary burn mechanism, founder vesting, and built-in security protections, BITI is designed to be a robust, auditable, and accessible digital asset for the new generation of DeFi participants.</p>
+  <div class="highlight">
+    Biti is not a mere copy — it is a modern reinterpretation of Bitcoin's principles built on Ethereum's programmable infrastructure.
+  </div>
+
+  <!-- 2. INTRODUCTION -->
+  <h2 id="intro">2. Introduction</h2>
+  <p>Since Bitcoin's launch in 2009, the crypto asset market has grown exponentially. However, the technical barrier to creating, distributing, and using tokens remains high for most of the population. Biti was created with the mission of simplifying access to the DeFi (Decentralized Finance) ecosystem, offering an audited, transparent token with clear rules from day one.</p>
+  <p>Built on the ERC-20 standard and OpenZeppelin v5 libraries — the most audited in the Ethereum ecosystem — BITI is verifiable by anyone on Etherscan and can be traded directly on Uniswap without intermediaries.</p>
+
+  <!-- 3. PROBLEM -->
+  <h2 id="problem">3. The Problem</h2>
+  <p>The crypto ecosystem faces three critical challenges that prevent mass adoption:</p>
+  <ul>
+    <li><strong>Lack of transparency:</strong> Many projects neither publish nor verify their smart contract source code.</li>
+    <li><strong>Security risks:</strong> Unaudited contracts are vulnerable to attacks, resulting in billions of dollars lost every year.</li>
+    <li><strong>Concentration of power:</strong> Projects where the team can arbitrarily manipulate the supply or pause transactions without prior communication.</li>
+  </ul>
+
+  <!-- 4. SOLUTION -->
+  <h2 id="solution">4. The Solution</h2>
+  <p>Biti addresses these challenges with four pillars:</p>
+  <ol>
+    <li><strong>Open Source and Verified:</strong> Contract published and verified on Etherscan. Anyone can read and audit the code.</li>
+    <li><strong>Security by Design:</strong> Based on OpenZeppelin v5 with documented internal audit (AUDIT_REPORT.md). Vulnerability BITI-01 was identified and fixed before deployment.</li>
+    <li><strong>Clear Supply Rules:</strong> Absolute cap of 110 billion. Burn mechanism available to all holders. 6-month vesting for founders.</li>
+    <li><strong>Unrestricted Access:</strong> Tradeable directly on Uniswap. One-click MetaMask integration. No KYC, no intermediaries.</li>
+  </ol>
+
+  <!-- 5. TOKENOMICS -->
+  <h2 id="tokenomics">5. Tokenomics</h2>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Name</td><td>Biti</td></tr>
+    <tr><td>Symbol</td><td>BITI</td></tr>
+    <tr><td>Standard</td><td>ERC-20 (Ethereum)</td></tr>
+    <tr><td>Decimals</td><td>18</td></tr>
+    <tr><td>Initial Supply</td><td>99,000,000,000 BITI</td></tr>
+    <tr><td>Maximum Supply</td><td>110,000,000,000 BITI</td></tr>
+    <tr><td>Transaction Fee</td><td>0% to 5% (configurable)</td></tr>
+  </table>
+
+  <h3>Supply Distribution</h3>
+  <table>
+    <tr><th>Recipient</th><th>Percentage</th><th>Amount</th><th>Condition</th></tr>
+    <tr><td>Circulation / Community</td><td>80%</td><td>79.2B BITI</td><td>Immediate</td></tr>
+    <tr><td>Founder Vesting</td><td>20%</td><td>19.8B BITI</td><td>Locked 180 days</td></tr>
+  </table>
+
+  <h3>Fee Mechanism</h3>
+  <p>The contract allows setting a transaction fee between 0% and 5%. When active, a fraction of each transfer is sent to the owner's address. This feature can be used to fund development, marketing, or token buyback and burn.</p>
+
+  <h3>Deflationary Burn</h3>
+  <p>Any holder can call the <code>burn()</code> function to permanently destroy their own tokens, reducing the total supply. This creates a voluntary deflationary mechanism that may appreciate remaining tokens over time.</p>
+
+  <!-- 6. TECHNOLOGY -->
+  <h2 id="technology">6. Technology</h2>
+  <h3>Blockchain</h3>
+  <p>BITI is deployed on the Ethereum blockchain — the world's most widely used and secure smart contract network with over 10 years of uninterrupted operational history.</p>
+
+  <h3>ERC-20 Standard</h3>
+  <p>ERC-20 is the de facto standard for fungible tokens on Ethereum. It guarantees compatibility with all wallets (MetaMask, Ledger, etc.) and DEXs (Uniswap, SushiSwap, etc.).</p>
+
+  <h3>OpenZeppelin v5</h3>
+  <p>OpenZeppelin libraries are audited by over 300 security researchers and used by projects managing over $1 trillion in assets. Biti inherits protections from:</p>
+  <ul>
+    <li><strong>ERC20Pausable</strong> — global emergency pause</li>
+    <li><strong>ERC20Burnable</strong> — token burn</li>
+    <li><strong>ERC20Capped</strong> — hard supply cap</li>
+    <li><strong>Ownable</strong> — access control</li>
+    <li><strong>ReentrancyGuard</strong> — reentrancy attack protection</li>
+  </ul>
+
+  <h3>Development Stack</h3>
+  <ul>
+    <li>Solidity 0.8.20 with optimizer enabled</li>
+    <li>Hardhat 2.22.x with ESM</li>
+    <li>Automated tests: 14/14 passing</li>
+    <li>Etherscan verification with hardhat-verify</li>
+  </ul>
+
+  <!-- 7. SECURITY -->
+  <h2 id="security">7. Security</h2>
+  <div class="highlight">
+    The contract underwent an internal audit prior to deployment. Vulnerability BITI-01 was identified and resolved. The full report is available in AUDIT_REPORT.md in the repository.
+  </div>
+
+  <h3>BITI-01 (Fixed)</h3>
+  <p>The <code>_update()</code> function was calling <code>ERC20._update</code> directly instead of <code>super._update</code>, which allowed the transaction fee to be charged even when the contract was paused. Fixed before mainnet deployment.</p>
+
+  <h3>BITI-02, 03, 04 (Documented Design Risks)</h3>
+  <p>Centralization risks documented: the owner can pause, change the fee, and mint up to the hard cap. These powers are intentional and publicly documented for full transparency.</p>
+
+  <h3>Future Security Plans</h3>
+  <p>The team plans to engage a certified auditor such as Certik, Hacken, or Trail of Bits in Phase 4 of the roadmap.</p>
+
+  <!-- 8. ROADMAP -->
+  <h2 id="roadmap">8. Roadmap</h2>
+  <table>
+    <tr><th>Phase</th><th>Description</th><th>Status</th></tr>
+    <tr>
+      <td>Phase 1</td>
+      <td>Development, testing, audit, Sepolia deploy, Etherscan verification</td>
+      <td><span class="badge-done">Complete</span></td>
+    </tr>
+    <tr>
+      <td>Phase 2</td>
+      <td>Mainnet deploy, Uniswap liquidity, CoinGecko/CoinMarketCap listing, website and whitepaper</td>
+      <td><span class="badge-pen">In Progress</span></td>
+    </tr>
+    <tr>
+      <td>Phase 3</td>
+      <td>Discord/Telegram community, early adopter airdrop, DeFi partnerships, marketing campaign</td>
+      <td><span class="badge-pen">Planned</span></td>
+    </tr>
+    <tr>
+      <td>Phase 4</td>
+      <td>Staking, DAO governance, centralized exchange listings, certified security audit</td>
+      <td><span class="badge-pen">Planned</span></td>
+    </tr>
+  </table>
+
+  <!-- 9. TEAM -->
+  <h2 id="team">9. Team</h2>
+  <table>
+    <tr><th>Name</th><th>Role</th></tr>
+    <tr><td>Antonio Silva Gomes</td><td>Founder, Developer, Security Auditor</td></tr>
+  </table>
+  <p>Open-source project. Community contributions are welcome via pull request.</p>
+
+  <!-- 10. LINKS -->
+  <h2 id="links">10. Links &amp; Contract</h2>
+  <p><strong>Contract Address (Sepolia):</strong></p>
+  <div class="code">0x54B9b4db91eC0dE6D3e381D73F6634771a04cF7D</div>
+  <ul>
+    <li><a href="https://sepolia.etherscan.io/address/0x54B9b4db91eC0dE6D3e381D73F6634771a04cF7D#code" target="_blank">Etherscan Sepolia (verified)</a></li>
+    <li><a href="https://app.uniswap.org/#/swap?outputCurrency=0x54B9b4db91eC0dE6D3e381D73F6634771a04cF7D" target="_blank">Uniswap — Buy BITI</a></li>
+    <li><a href="../index.html">Biti Official Website</a></li>
+    <li><a href="whitepaper-pt.html">Whitepaper em Português</a></li>
+  </ul>
+
+  <!-- 11. DISCLAIMER -->
+  <h2 id="disclaimer">11. Legal Disclaimer</h2>
+  <div class="highlight">
+    This whitepaper is provided for informational and educational purposes only. Biti (BITI) is an experimental token under active development. Nothing contained in this document constitutes an offer, solicitation, or investment recommendation. Investing in crypto assets involves significant risks, including the possibility of total loss of invested capital. Always conduct your own research (DYOR — Do Your Own Research) before acquiring any digital asset. The team assumes no responsibility for financial losses of any kind.
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 Biti (BITI) — Whitepaper v1.0 &nbsp;|&nbsp; <a href="../index.html">Back to website</a></p>
+</footer>
+</body>
+</html>

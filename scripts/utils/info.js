@@ -1,0 +1,71 @@
+// Exibe informações completas do contrato deployado
+// Uso: npx hardhat run scripts/utils/info.js --network sepolia
+//      npx hardhat run scripts/utils/info.js --network mainnet
+//
+// Requer no .env: TOKEN_ADDRESS=0xEnderecoDoContrato
+
+import hre from "hardhat";
+const { ethers } = hre;
+
+async function main() {
+  const tokenAddress = process.env.TOKEN_ADDRESS;
+
+  if (!tokenAddress) {
+    console.error("❌ Defina TOKEN_ADDRESS no .env");
+    process.exit(1);
+  }
+
+  const token = await ethers.getContractAt("Biticoin", tokenAddress);
+  const [signer] = await ethers.getSigners();
+
+  console.log("📊 ══════════════════════════════════════");
+  console.log("       BITICOIN (BITI) — Info do Contrato");
+  console.log("══════════════════════════════════════\n");
+
+  const [name, symbol, decimals, totalSupply, maxSupply, owner,
+         paused, feeBps, feeRecipient, vestingReleased, vestingAmount, vestingTime] =
+    await Promise.all([
+      token.name(),
+      token.symbol(),
+      token.decimals(),
+      token.totalSupply(),
+      token.MAX_SUPPLY(),
+      token.owner(),
+      token.paused(),
+      token.transferFeeBps(),
+      token.feeRecipient(),
+      token.vestingReleased(),
+      token.vestingAmount(),
+      token.vestingReleaseTime(),
+    ]);
+
+  const ownerBalance = await token.balanceOf(owner);
+
+  const vestingDate = new Date(Number(vestingTime) * 1000).toLocaleDateString("pt-BR");
+
+  console.log(`📋 Endereço:       ${tokenAddress}`);
+  console.log(`🌐 Rede:           ${hre.network.name}`);
+  console.log(`🔤 Nome:           ${name} (${symbol})`);
+  console.log(`🔢 Decimais:       ${decimals}`);
+  console.log(`💰 Total Supply:   ${ethers.formatEther(totalSupply)} BITI`);
+  console.log(`🔒 Supply Máximo:  ${ethers.formatEther(maxSupply)} BITI`);
+  console.log(`👤 Owner:          ${owner}`);
+  console.log(`💼 Saldo Owner:    ${ethers.formatEther(ownerBalance)} BITI`);
+  console.log(`⏸  Pausado:        ${paused ? "SIM ⚠️" : "Não"}`);
+  console.log(`💸 Taxa atual:     ${Number(feeBps) / 100}%`);
+  console.log(`📬 Dest. da taxa:  ${feeRecipient}`);
+  console.log(`\n🔐 Vesting (20% founder):`);
+  console.log(`   Valor:          ${ethers.formatEther(vestingAmount)} BITI`);
+  console.log(`   Liberação:      ${vestingDate}`);
+  console.log(`   Liberado:       ${vestingReleased ? "Sim ✅" : "Não (ainda travado)"}`);
+
+  const explorerBase = hre.network.name === "mainnet"
+    ? `https://etherscan.io/address/${tokenAddress}`
+    : `https://sepolia.etherscan.io/address/${tokenAddress}`;
+  console.log(`\n🔍 Etherscan:      ${explorerBase}`);
+  console.log("\n══════════════════════════════════════");
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => { console.error("❌ Erro:", error.message); process.exit(1); });
