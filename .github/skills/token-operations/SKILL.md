@@ -1,15 +1,15 @@
 ---
 name: token-operations
-description: "Use when: executar operacoes repetitivas do token (deploy em testnet, verify, consulta de info, transferencia controlada e preparo de liquidez) com validacoes de seguranca antes de comandos de risco."
+description: "Use quando executar operacoes recorrentes do token (deploy, verify, consulta, transferencia e liquidez) com validacoes de seguranca antes de comandos de risco."
 ---
 
 # Token Operations Skill
 
-## Purpose
+## Objetivo
 
-Provide a safe, repeatable workflow for BITI token operations in this repository.
+Fornecer um fluxo seguro e repetivel para operacoes do token BITI neste repositorio.
 
-Reference docs:
+Documentos de referencia:
 
 - [README.md](../../../README.md)
 - [AUDIT_REPORT.md](../../../AUDIT_REPORT.md)
@@ -17,7 +17,7 @@ Reference docs:
 
 ## Triggers
 
-Use this skill when requests include:
+Use esta skill quando a solicitacao envolver:
 
 - deploy token
 - verify contract
@@ -28,48 +28,48 @@ Use this skill when requests include:
 
 ## Workflow
 
-1. Identify target network and classify risk (testnet vs mainnet).
-2. Validate required env vars and API keys before any command.
-3. Run the minimum safe command set for the user goal.
-4. Report outcomes and next safe action.
+1. Identificar rede alvo e classificar risco (testnet vs mainnet).
+2. Validar env vars e API keys obrigatorias antes de qualquer comando.
+3. Executar o menor conjunto de comandos seguro para o objetivo.
+4. Reportar resultado e proxima acao segura.
 
 ## Safe Command Sets
 
-### Deploy (preferred order)
+### Deploy (ordem preferencial)
 
 - Local: `npm run deploy:local`
 - Sepolia: `npm run deploy:sepolia`
 - Amoy: `npm run deploy:amoy`
-- Mainnet: only with explicit user confirmation
+- Mainnet: somente com confirmacao explicita do usuario
 
 ### Verify
 
 - Sepolia: `npm run verify:sepolia`
 - Mainnet: `npm run verify:mainnet`
-- Polygon family: `npm run verify:amoy` or `npm run verify:polygon` (requires `POLYGONSCAN_API_KEY`)
+- Polygon: `npm run verify:amoy` ou `npm run verify:polygon` (exige `POLYGONSCAN_API_KEY`)
 
-### Inspect
+### Inspecao
 
 - `npm run info:sepolia`
 - `npm run info:mainnet`
 
-### Transfer / Liquidity (high risk)
+### Transferencia e Liquidez (alto risco)
 
 - Transfer 90%: `npm run transfer:90`, `npm run transfer:90:main`, `npm run transfer:90:polygon`
 - Liquidity: `npm run liquidity:sepolia`, `npm run liquidity:mainnet`
 
 ## Required Safety Gates
 
-- Never assume mainnet intent without explicit confirmation.
-- Warn before destructive operations.
-- Always show which env vars are required for the selected command.
-- Encourage running `npm run test` after code changes and before deploy flows.
+- Nunca assumir intencao de mainnet sem confirmacao explicita.
+- Avisar antes de operacoes destrutivas.
+- Sempre listar env vars necessarias para o comando escolhido.
+- Recomendar `npm run test` apos mudancas de codigo e antes de deploy.
 
 ## Output Contract
 
-Every response should include:
+Toda resposta deve incluir:
 
-1. Goal summary and selected network
-2. Preconditions checklist
-3. Commands to run (repo-native)
-4. Validation steps after execution
+1. Resumo do objetivo e rede selecionada
+2. Checklist de precondicoes
+3. Comandos para executar (nativos do repositorio)
+4. Passos de validacao apos a execucao

@@ -1,11 +1,11 @@
 ---
-description: "Generate a release readiness checklist for this Hardhat token project, including compile/test, env validation, verification readiness, and per-network go/no-go gates."
+description: "Gerar checklist de prontidao para release no projeto Hardhat, com gates de compile, teste, env, verify e decisao go/no-go por rede."
 mode: ask
 ---
 
 # Release Checklist
 
-You are preparing a release checklist for this repository.
+Voce esta preparando um checklist de release para este repositorio.
 
 ## Inputs
 
@@ -15,19 +15,19 @@ You are preparing a release checklist for this repository.
 
 ## Tasks
 
-1. Build a concise go/no-go checklist grouped by:
-   - Code quality gates (compile/tests)
-   - Environment and keys
-   - Deploy and verify steps
-   - Post-deploy validation
-2. Use project scripts from [package.json](../../package.json) when suggesting commands.
-3. Call out high-risk operations and explicit confirmations needed.
-4. Mention known pitfalls from [AUDIT_REPORT.md](../../AUDIT_REPORT.md) and [AGENTS.md](../../AGENTS.md).
+1. Montar um checklist objetivo de go/no-go agrupado por:
+   - Qualidade de codigo (compile e testes)
+   - Ambiente e chaves
+   - Deploy e verify
+   - Validacao pos-deploy
+2. Sugerir apenas comandos existentes em [package.json](../../package.json).
+3. Destacar operacoes de alto risco e confirmacoes explicitas necessarias.
+4. Incluir alertas conhecidos de [AUDIT_REPORT.md](../../AUDIT_REPORT.md) e [AGENTS.md](../../AGENTS.md).
 
 ## Output Format
 
 - Section 1: Release Summary (network, risk level, required approvals)
 - Section 2: Pre-flight Checklist
-- Section 3: Execution Plan (commands only from this repo)
+- Section 3: Execution Plan (commands from this repo only)
 - Section 4: Post-release Validation
-- Section 5: Rollback/Contingency Notes
+- Section 5: Rollback and Contingency Notes

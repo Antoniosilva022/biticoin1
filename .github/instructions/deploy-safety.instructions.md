@@ -1,21 +1,22 @@
 ---
 applyTo: "scripts/deploy/**/*.js,scripts/utils/**/*.js,hardhat.config.js"
-description: "Use when: editar scripts de deploy/verify/liquidity/transfer ou configuracao de rede. Exige checklist de env vars, validacao em testnet e confirmacao explicita para mainnet."
+description: "Use quando editar scripts de deploy, verify, liquidez, transferencia ou configuracao de rede. Exige validacao de env vars, passagem por testnet e confirmacao explicita para acoes de mainnet."
 ---
 
-# Deploy Safety Checklist
+# Deploy Safety Guardrail
 
-## Objective
+## Objetivo
 
-Prevent destructive or costly mistakes when running network operations.
+Evitar comandos destrutivos ou caros em operacoes de rede.
 
-## Mandatory Checks Before Suggesting Execution
+## Checklist Obrigatorio Antes de Sugerir Execucao
 
-1. Confirm required environment variables for the target script in [.env.example](../../.env.example) and script guards.
-2. Prefer testnet first (`sepolia` or `polygonAmoy`) before any mainnet operation.
-3. Require explicit user confirmation before commands that can move funds or tokens.
+1. Confirmar variaveis de ambiente exigidas no script alvo e em [.env.example](../../.env.example).
+2. Priorizar testnet primeiro (sepolia ou polygonAmoy) antes de qualquer operacao em mainnet.
+3. Exigir confirmacao explicita do usuario antes de comandos que movam fundos ou tokens.
+4. Declarar rede alvo de forma explicita na resposta.
 
-## High-Risk Commands
+## Comandos de Alto Risco
 
 - `npm run deploy:mainnet`
 - `npm run deploy:polygon`
@@ -23,13 +24,14 @@ Prevent destructive or costly mistakes when running network operations.
 - `npm run transfer:90:main`
 - `npm run transfer:90:polygon`
 
-## Project-Specific Pitfalls
+## Armadilhas Conhecidas do Projeto
 
-- Verification on Polygon family needs `POLYGONSCAN_API_KEY` (checked in [scripts/utils/verify.js](../../scripts/utils/verify.js)).
-- `send-90-percent` is destructive with wrong recipient.
-- Keep retry behavior in [scripts/deploy/launch-mainnet.js](../../scripts/deploy/launch-mainnet.js) for transient RPC failures.
+- Verify em redes Polygon exige `POLYGONSCAN_API_KEY` (validado em [scripts/utils/verify.js](../../scripts/utils/verify.js)).
+- O fluxo send-90-percent e destrutivo com destinatario incorreto.
+- Preservar retry em [scripts/deploy/launch-mainnet.js](../../scripts/deploy/launch-mainnet.js) para falhas transientes de RPC.
 
-## Done Criteria
+## Criterio de Conclusao
 
-- Script changes preserve clear error output and network awareness.
-- Mainnet-impacting steps are never auto-assumed.
+- Alteracoes mantem mensagens de erro claras e consciencia de rede.
+- Etapas com impacto em mainnet nunca sao assumidas automaticamente.
+- A resposta final sempre inclui precondicoes, comando e validacao posterior.
