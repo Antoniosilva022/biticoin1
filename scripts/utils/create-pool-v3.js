@@ -2,6 +2,7 @@
 // Uso: npm run pool:polygon
 import hre from "hardhat";
 const { ethers } = hre;
+import { resolveTokenAddress } from "./token-address.js";
 
 // Uniswap V3 na Polygon
 const FACTORY_V3  = "0x1F98431c8aD98523631AE4a59f267346ea31F984";
@@ -38,35 +39,40 @@ function sqrtBigInt(n) {
   return x;
 }
 
-function getSqrtPriceX96(price) {
-  // price = token1 per token0 (BITI per WMATIC), ambos 18 decimais
-  // sqrtPriceX96 = sqrt(price) * 2^96 = sqrt(price * 2^192)
+function getSqrtPriceX96FromFraction(numerator, denominator) {
+  // price = token1/token0
+  // sqrtPriceX96 = sqrt(price * 2^192) = sqrt((numerator/denominator) * 2^192)
   const Q192 = 2n ** 192n;
-  return sqrtBigInt(BigInt(price) * Q192);
+  return sqrtBigInt((numerator * Q192) / denominator);
 }
 
 async function main() {
+  if (hre.network.name !== "polygon") {
+    console.error("❌ Este script foi projetado para --network polygon.");
+    process.exit(1);
+  }
+
   const provider = new ethers.JsonRpcProvider(process.env.POLYGON_RPC_URL);
   const wallet   = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-  const BITI     = process.env.TOKEN_ADDRESS;
+  const { tokenAddress: BITI, sourceEnvVar } = resolveTokenAddress(hre.network.name);
 
   console.log("🚀 Criando pool Uniswap V3 na Polygon...");
   console.log("📋 Carteira:", wallet.address);
   console.log("📍 BITI:", BITI);
+  console.log("🧭 Env utilizado:", sourceEnvVar);
 
   // Ordem dos tokens (obrigatória: menor endereço = token0)
   const [token0, token1] = WMATIC.toLowerCase() < BITI.toLowerCase()
     ? [WMATIC, BITI]
     : [BITI, WMATIC];
 
-  // Preço: queremos 1 WMATIC = 1.000.000.000 BITI
-  // Se WMATIC=token0, BITI=token1 → price = 1e9
-  // Se BITI=token0, WMATIC=token1 → price = 1/1e9 (invertido)
+  // Preço-alvo: 1 WMATIC = 1.000.000.000 BITI
+  // Se WMATIC=token0, BITI=token1: price = 1e9
+  // Se BITI=token0, WMATIC=token1: price = 1/1e9
   const isMatic0 = token0.toLowerCase() === WMATIC.toLowerCase();
-  const price    = isMatic0 ? 1_000_000_000 : 1; // ajustado abaixo se invertido
   const sqrtPriceX96 = isMatic0
-    ? getSqrtPriceX96(1_000_000_000)
-    : getSqrtPriceX96(1); // 1/1e9 → usamos 1 e depois checamos
+    ? getSqrtPriceX96FromFraction(1_000_000_000n, 1n)
+    : getSqrtPriceX96FromFraction(1n, 1_000_000_000n);
 
   console.log("🔢 token0:", token0);
   console.log("🔢 token1:", token1);

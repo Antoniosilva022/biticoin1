@@ -2,6 +2,12 @@ import hre from "hardhat";
 const { ethers } = hre;
 
 async function main() {
+  if (hre.network.name !== "polygon") {
+    console.error("❌ Operação bloqueada: este repositório está em modo Polygon-only.");
+    console.error("   Use scripts com --network polygon.");
+    process.exit(1);
+  }
+
   console.log("🚀 Deploy na Sepolia Testnet...\n");
 
   const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);

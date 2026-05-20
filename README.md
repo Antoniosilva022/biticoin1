@@ -1,6 +1,12 @@
-# Biti Token (BITI)
+# Biticoin Token (BITI)
 
-Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de segurança, vesting do fundador e liquidez no Uniswap V2.
+Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de segurança, vesting do fundador e operação protegida em Polygon.
+
+## Modo Operacional Atual (Polygon-only)
+
+- Scripts críticos de deploy/launch/transferência/liquidez estão bloqueados fora de `--network polygon`.
+- Endereço oficial em produção (Polygon): `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57`.
+- Execuções em Sepolia/Mainnet foram desativadas por segurança operacional.
 
 ## Funcionalidades
 
@@ -23,16 +29,13 @@ Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de seguran
 | **Total inicial**  | **99 bilhões**  | 100% |                                |
 | Supply máximo      | 110 bilhões     | —    | Teto para futuros mints        |
 
-## Contratos Deployados
+## Contrato em Produção
 
-| Rede    | Endereço                                     | Status     |
-|---------|----------------------------------------------|------------|
-| Sepolia | `0x54B9b4db91eC0dE6D3e381D73F6634771a04cF7D` | ✅ Verificado |
-| Mainnet | —                                            | ⏳ Pendente  |
+| Rede    | Endereço                                     | Status         |
+|---------|----------------------------------------------|----------------|
+| Polygon | `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57` | ✅ Em produção |
 
-- Deployer: `0x842c3D5cC3D31395d323e51795c82F50287fDa2E`
-- MetaMask recipient: `0x10F35ede5941cE7f11A866A239C0bBea4FCf0a5b`
-- Etherscan Sepolia: https://sepolia.etherscan.io/address/0x54B9b4db91eC0dE6D3e381D73F6634771a04cF7D
+- Polygonscan: https://polygonscan.com/address/0xd7e0cef1511a7eef7fc57998214fb17a270a8b57
 
 ## Site e Whitepaper
 
@@ -49,23 +52,27 @@ npm install
 Configure o `.env` (use `.env.example` como base):
 
 ```
-SEPOLIA_RPC_URL=https://sepolia.drpc.org
-MAINNET_RPC_URL=https://ethereum-rpc.publicnode.com
+POLYGON_RPC_URL=https://polygon-rpc.com
 PRIVATE_KEY=sua_chave_privada
 RECIPIENT_ADDRESS=0xSuaMetaMask
 TOKEN_ADDRESS=0xEnderecoDoContrato
+TOKEN_ADDRESS_POLYGON=0xEnderecoPolygon
+TOKEN_ADDRESS_AMOY=0xEnderecoAmoy
 ETHERSCAN_API_KEY=sua_api_key
+POLYGONSCAN_API_KEY=sua_api_key_polygon
 LIQUIDITY_BITI_AMOUNT=700000000
 LIQUIDITY_ETH_AMOUNT=0.04
 ```
 
 > Gere uma nova carteira com: `npm run wallet:new`
 
+> Recomendado: use `TOKEN_ADDRESS_POLYGON` para operação segura em produção. O `TOKEN_ADDRESS` continua como fallback.
+
 ## Estrutura do Projeto
 
 ```
-Biti1/
-├── contracts/Biti.sol               # Contrato ERC-20 principal
+biticoin1/
+├── contracts/Biticoin.sol           # Contrato ERC-20 principal
 ├── scripts/
 │   ├── deploy/
 │   │   ├── deploy-local.js              # Deploy na rede local
@@ -86,7 +93,7 @@ Biti1/
 │   └── whitepaper/
 │       ├── whitepaper-pt.html           # Whitepaper em português
 │       └── whitepaper-en.html           # Whitepaper em inglês
-├── test/Biti.test.js                # Testes unitários (25/25, cobertura completa)
+├── test/Biticoin.test.js            # Testes unitários (25/25, cobertura completa)
 └── AUDIT_REPORT.md                      # Relatório de auditoria de segurança
 ```
 
@@ -106,36 +113,29 @@ npm run compile
 
 ```bash
 npm run wallet:new          # Gerar nova carteira Ethereum
-npm run balance:sepolia     # Verificar saldo ETH na Sepolia
-npm run balance:mainnet     # Verificar saldo ETH na Mainnet
+npm run balance:polygon     # Verificar saldo MATIC na Polygon
 ```
 
-### Launch Automático (recomendado)
+### Launch Automático
 
-Faz deploy + transferência 90% para MetaMask + verificação Etherscan em um único comando:
+Os scripts de launch de outras redes estão bloqueados. Use apenas Polygon:
 
 ```bash
-# Sepolia testnet
-npm run launch:sepolia:auto
-
-# Mainnet Ethereum
-npm run launch:mainnet:auto
+npm run launch:polygon:auto
 ```
 
 ### Deploy Manual
 
 ```bash
 npm run deploy:local        # Local (sem custo, para desenvolvimento)
-npm run deploy:sepolia      # Sepolia testnet
-npm run deploy:mainnet      # Mainnet Ethereum
+npm run deploy:polygon      # Polygon (produção)
 ```
 
 ### Transferir 90% dos tokens
 
 ```bash
 # Defina TOKEN_ADDRESS e RECIPIENT_ADDRESS no .env
-npm run transfer:90         # Sepolia
-npm run transfer:90:main    # Mainnet
+npm run transfer:90:polygon # Polygon
 ```
 
 ### Adicionar liquidez no Uniswap V2
@@ -147,8 +147,7 @@ Adicione o par BITI/ETH no Uniswap V2:
 # LIQUIDITY_BITI_AMOUNT=700000000    (ex: 700 milhões de BITI)
 # LIQUIDITY_ETH_AMOUNT=0.04          (ex: 0.04 ETH)
 
-npm run liquidity:sepolia   # Sepolia testnet
-npm run liquidity:mainnet   # Mainnet
+npm run liquidity:polygon   # Polygon
 ```
 
 O script irá:
@@ -161,41 +160,38 @@ O script irá:
 ### Informações do contrato
 
 ```bash
-npm run info:sepolia
-npm run info:mainnet
+npm run info:polygon
 ```
 
 ### Usar MetaMask diretamente
 
-1. Abra a MetaMask e selecione a rede (`Sepolia` ou `Ethereum Mainnet`)
+1. Abra a MetaMask e selecione a rede (`Polygon Mainnet`)
 2. Clique em **Importar token** e informe:
-   - Endereço Sepolia: `0x54B9b4db91eC0dE6D3e381D73F6634771a04cF7D`
+   - Endereço Polygon: `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57`
    - Símbolo: `BITI`
    - Decimais: `18`
 3. Verifique em:
-   - Sepolia: https://sepolia.etherscan.io
-   - Mainnet: https://etherscan.io
+   - Polygon: https://polygonscan.com
 
 ## Status
 
 ✅ Contrato criado e auditado (72/72 testes passando: 25 funcionais + 47 de vulnerabilidade)  
-✅ Deploy Sepolia: `0x54B9b4db91eC0dE6D3e381D73F6634771a04cF7D`  
-✅ 71,28 bilhões BITI transferidos para MetaMask  
-✅ Contrato verificado no Etherscan Sepolia  
+✅ Contrato em produção Polygon: `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57`  
+✅ Modo operacional Polygon-only aplicado nos scripts críticos  
 ✅ Auditoria de segurança concluída (`AUDIT_REPORT.md`) — 72/72 testes, 0 vulnerabilidades críticas  
 ✅ Site oficial criado (`site/index.html`)  
 ✅ Whitepaper PT e EN criados  
 ✅ Tokenomics: 80% imediato + 20% vesting 180 dias  
-✅ Liquidez no Uniswap Sepolia concluída (`npm run liquidity:sepolia`)  
+✅ Fluxos de consulta e operação em Polygon validados  
 ✅ Teste de vulnerabilidades: 47/47 vetores auditados (reentrância, overflow, bypass de pause, etc.)  
-⏳ Deploy Mainnet (aguardando ETH na carteira deployer)  
+✅ Ambiente focado em produção Polygon  
 
 ## Roteiro para Listagem (CoinGecko / CoinMarketCap / Coinbase)
 
 1. ✅ **Contrato** — ERC-20 auditado e deployado
 2. ✅ **Whitepaper** — PT e EN disponíveis em `site/whitepaper/`
 3. ✅ **Site** — Disponível em `site/index.html`
-4. ⏳ **Liquidez** — Adicionar par BITI/ETH no Uniswap (`npm run liquidity:mainnet`)
+4. ⏳ **Liquidez** — Reforçar par BITI/ETH na Polygon (`npm run liquidity:polygon`)
 5. ⏳ **Comunidade** — Discord, Twitter/X, Telegram
 6. ⏳ **Aplicação** — Submeter formulário CoinGecko/CoinMarketCap com contrato mainnet
 7. ⏳ **Legal** — Consultar advogados para compliance KYC/AML
@@ -213,6 +209,6 @@ npm run info:mainnet
 Este projeto é para fins educacionais. Para uso em produção:
 - Nunca armazene nem compartilhe chaves privadas em arquivos versionados ou expostos.
 - Mantenha o arquivo `.env` fora do repositório e use gerenciamento seguro de segredos.
-- Realize auditoria de segurança profissional antes do deploy em mainnet.
+- Realize auditoria de segurança profissional antes de qualquer mudança de rede ou novo deploy.
 - Faça testes completos de deploy, transferência, taxa, vesting e liquidez antes do lançamento público.
 - Consulte especialistas jurídicos e financeiros antes de lançar e divulgar o token.

@@ -35,6 +35,12 @@ async function waitForReceiptWithRetry(provider, txHash, maxAttempts = 40, delay
 }
 
 async function main() {
+  if (hre.network.name !== "polygon") {
+    console.error("❌ Operação bloqueada: este repositório está em modo Polygon-only.");
+    console.error("   Use scripts com --network polygon.");
+    process.exit(1);
+  }
+
   console.log("🚀 [1/4] Deploy na Mainnet Ethereum...\n");
 
   const provider = new ethers.JsonRpcProvider(process.env.MAINNET_RPC_URL);

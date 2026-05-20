@@ -7,9 +7,10 @@
 //   ETHERSCAN_API_KEY=suaChaveEtherscan
 
 import hre from "hardhat";
+import { resolveTokenAddress } from "./token-address.js";
 
 async function main() {
-  const tokenAddress = process.env.TOKEN_ADDRESS;
+  const { tokenAddress, sourceEnvVar } = resolveTokenAddress(hre.network.name);
   const isPolygonFamily = hre.network.name === "polygon" || hre.network.name === "polygonAmoy";
   const explorerBaseUrl = hre.network.name === "mainnet"
     ? "https://etherscan.io"
@@ -19,13 +20,8 @@ async function main() {
         ? "https://polygonscan.com"
         : "https://amoy.polygonscan.com";
 
-  if (!tokenAddress) {
-    console.error("❌ Defina TOKEN_ADDRESS no .env");
-    process.exit(1);
-  }
-
-  if (isPolygonFamily && !process.env.POLYGONSCAN_API_KEY) {
-    console.error("❌ Defina POLYGONSCAN_API_KEY no .env");
+  if (isPolygonFamily && !process.env.POLYGONSCAN_API_KEY && !process.env.ETHERSCAN_API_KEY) {
+    console.error("❌ Defina POLYGONSCAN_API_KEY ou ETHERSCAN_API_KEY no .env");
     console.error("   Obtenha em: https://polygonscan.com/myapikey");
     process.exit(1);
   }
@@ -38,6 +34,7 @@ async function main() {
 
   console.log("🔍 Verificando contrato no Etherscan...");
   console.log("📋 Endereço:", tokenAddress);
+  console.log("🧭 Env utilizado:", sourceEnvVar);
   console.log("🌐 Rede:", hre.network.name);
 
   try {

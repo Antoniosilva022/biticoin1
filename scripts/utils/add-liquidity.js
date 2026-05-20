@@ -1,5 +1,6 @@
 import hre from "hardhat";
 import dotenv from "dotenv";
+import { resolveTokenAddress } from "./token-address.js";
 dotenv.config();
 
 const { ethers } = hre;
@@ -20,11 +21,13 @@ const ERC20_ABI = [
 ];
 
 async function main() {
-  const tokenAddress = process.env.TOKEN_ADDRESS;
-  if (!tokenAddress) {
-    console.error("❌ TOKEN_ADDRESS não definido no .env");
+  if (hre.network.name !== "polygon") {
+    console.error("❌ Operação bloqueada: este script está em modo Polygon-only.");
+    console.error("   Use: --network polygon");
     process.exit(1);
   }
+
+  const { tokenAddress, sourceEnvVar } = resolveTokenAddress(hre.network.name);
 
   // Quantidade de BITI a adicionar como liquidez (padrão: 1 bilhão)
   const BITI_AMOUNT = process.env.LIQUIDITY_BITI_AMOUNT || "1000000000";
@@ -37,6 +40,7 @@ async function main() {
   console.log("💧 Adicionando liquidez no Uniswap V2...\n");
   console.log("📋 Carteira:      ", deployer.address);
   console.log("🪙 Token (BITI):  ", tokenAddress);
+  console.log("🧭 Env utilizado: ", sourceEnvVar);
   console.log("🌐 Rede:          ", network);
   console.log("💎 BITI a depositar:", Number(BITI_AMOUNT).toLocaleString("pt-BR"), "BITI");
   console.log("💰 ETH a depositar:", ETH_AMOUNT, "ETH\n");

@@ -6,14 +6,10 @@
 
 import hre from "hardhat";
 const { ethers } = hre;
+import { resolveTokenAddress } from "./token-address.js";
 
 async function main() {
-  const tokenAddress = process.env.TOKEN_ADDRESS;
-
-  if (!tokenAddress) {
-    console.error("❌ Defina TOKEN_ADDRESS no .env");
-    process.exit(1);
-  }
+  const { tokenAddress, sourceEnvVar } = resolveTokenAddress(hre.network.name);
 
   const token = await ethers.getContractAt("Biticoin", tokenAddress);
   const [signer] = await ethers.getSigners();
@@ -45,6 +41,7 @@ async function main() {
 
   console.log(`📋 Endereço:       ${tokenAddress}`);
   console.log(`🌐 Rede:           ${hre.network.name}`);
+  console.log(`🧭 Env utilizado:  ${sourceEnvVar}`);
   console.log(`🔤 Nome:           ${name} (${symbol})`);
   console.log(`🔢 Decimais:       ${decimals}`);
   console.log(`💰 Total Supply:   ${ethers.formatEther(totalSupply)} BITI`);
@@ -61,7 +58,13 @@ async function main() {
 
   const explorerBase = hre.network.name === "mainnet"
     ? `https://etherscan.io/address/${tokenAddress}`
-    : `https://sepolia.etherscan.io/address/${tokenAddress}`;
+    : hre.network.name === "sepolia"
+      ? `https://sepolia.etherscan.io/address/${tokenAddress}`
+      : hre.network.name === "polygon"
+        ? `https://polygonscan.com/address/${tokenAddress}`
+        : hre.network.name === "polygonAmoy"
+          ? `https://amoy.polygonscan.com/address/${tokenAddress}`
+          : `https://sepolia.etherscan.io/address/${tokenAddress}`;
   console.log(`\n🔍 Etherscan:      ${explorerBase}`);
   console.log("\n══════════════════════════════════════");
 }

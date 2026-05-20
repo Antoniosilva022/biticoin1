@@ -12,6 +12,12 @@ const NFT_ABI = [
 ];
 
 async function main() {
+  if (hre.network.name !== "polygon") {
+    console.error("❌ Operação bloqueada: este script está em modo Polygon-only.");
+    console.error("   Use: --network polygon");
+    process.exit(1);
+  }
+
   const provider = new ethers.JsonRpcProvider(process.env.POLYGON_RPC_URL);
   const wallet   = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
   const recipient = process.env.RECIPIENT_ADDRESS;
