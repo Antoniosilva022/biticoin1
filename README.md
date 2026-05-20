@@ -6,7 +6,7 @@ Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de seguran
 
 - Scripts críticos de deploy/launch/transferência/liquidez estão bloqueados fora de `--network polygon`.
 - Endereço oficial em produção (Polygon): `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57`.
-- Execuções em Sepolia/Mainnet foram desativadas por segurança operacional.
+- Execuções em redes fora da Polygon foram desativadas por segurança operacional.
 
 ## Funcionalidades
 
@@ -76,16 +76,14 @@ biticoin1/
 ├── scripts/
 │   ├── deploy/
 │   │   ├── deploy-local.js              # Deploy na rede local
-│   │   ├── deploy-sepolia.js            # Deploy na Sepolia testnet
-│   │   ├── deploy-mainnet.js            # Deploy na Mainnet
-│   │   ├── launch-sepolia.js            # Launch automático (deploy + transfer + verify) Sepolia
-│   │   └── launch-mainnet.js            # Launch automático (deploy + transfer + verify) Mainnet
+│   │   ├── deploy-polygon.js            # Deploy na Polygon
+│   │   └── launch-mainnet.js            # Launch automático (deploy + transfer + verify) em modo Polygon-only
 │   └── utils/
 │       ├── generate-wallet.js           # Gerar nova carteira
-│       ├── check-balance.js             # Verificar saldo ETH
+│       ├── check-balance.js             # Verificar saldo da carteira por rede
 │       ├── send-90-percent.js           # Enviar 90% dos tokens
 │       ├── add-liquidity.js             # Adicionar liquidez no Uniswap V2
-│       ├── verify.js                    # Verificar contrato no Etherscan
+│       ├── verify.js                    # Verificar contrato no explorer
 │       ├── info.js                      # Exibir informações do token
 │       └── test-transfer-90.js          # Testar transferência de 90% localmente
 ├── site/

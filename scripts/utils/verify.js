@@ -1,5 +1,5 @@
 // Verifica o código-fonte do contrato no Etherscan após deploy
-// Uso: npx hardhat run scripts/utils/verify.js --network sepolia
+// Uso: npx hardhat run scripts/utils/verify.js --network polygon
 //      npx hardhat run scripts/utils/verify.js --network mainnet
 //
 // Requer no .env:
@@ -14,11 +14,11 @@ async function main() {
   const isPolygonFamily = hre.network.name === "polygon" || hre.network.name === "polygonAmoy";
   const explorerBaseUrl = hre.network.name === "mainnet"
     ? "https://etherscan.io"
-    : hre.network.name === "sepolia"
-      ? "https://sepolia.etherscan.io"
-      : hre.network.name === "polygon"
+    : hre.network.name === "polygon"
         ? "https://polygonscan.com"
-        : "https://amoy.polygonscan.com";
+        : hre.network.name === "polygonAmoy"
+          ? "https://amoy.polygonscan.com"
+          : "https://polygonscan.com";
 
   if (isPolygonFamily && !process.env.POLYGONSCAN_API_KEY && !process.env.ETHERSCAN_API_KEY) {
     console.error("❌ Defina POLYGONSCAN_API_KEY ou ETHERSCAN_API_KEY no .env");
@@ -32,7 +32,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("🔍 Verificando contrato no Etherscan...");
+  console.log("🔍 Verificando contrato no explorer...");
   console.log("📋 Endereço:", tokenAddress);
   console.log("🧭 Env utilizado:", sourceEnvVar);
   console.log("🌐 Rede:", hre.network.name);

@@ -5,8 +5,7 @@
  * para a carteira MetaMask definida em RECIPIENT_ADDRESS no .env
  *
  * Uso:
- *   Sepolia:  npx hardhat run scripts/deploy/deploy-and-transfer.js --network sepolia
- *   Mainnet:  npx hardhat run scripts/deploy/deploy-and-transfer.js --network mainnet
+ *   Polygon:  npx hardhat run scripts/deploy/deploy-and-transfer.js --network polygon
  *
  * Variáveis obrigatórias no .env:
  *   PRIVATE_KEY         - chave privada do deployer
@@ -26,11 +25,8 @@ async function main() {
     process.exit(1);
   }
 
-  const isMainnet  = network.name === "mainnet";
-  const networkLabel = isMainnet ? "Mainnet Ethereum" : "Sepolia Testnet";
-  const explorerBase = isMainnet
-    ? "https://etherscan.io"
-    : "https://sepolia.etherscan.io";
+  const networkLabel = "Polygon Mainnet";
+  const explorerBase = "https://polygonscan.com";
 
   // ── Validações ──────────────────────────────────────────────────
   const recipient = process.env.RECIPIENT_ADDRESS;
@@ -53,15 +49,15 @@ async function main() {
   // ── Verificar saldo de gas ──────────────────────────────────────
   const ethBalance = await ethers.provider.getBalance(deployer.address);
   const ethBalanceFormatted = ethers.formatEther(ethBalance);
-  const minRequired = isMainnet ? 0.05 : 0.01;
+  const minRequired = 0.01;
 
   console.log("👤 Deployer:", deployer.address);
   console.log("📬 MetaMask:", recipient);
-  console.log(`💰 Saldo:    ${ethBalanceFormatted} ETH\n`);
+  console.log(`💰 Saldo:    ${ethBalanceFormatted} POL\n`);
 
   if (parseFloat(ethBalanceFormatted) < minRequired) {
-    console.error(`❌ Saldo insuficiente! Mínimo: ${minRequired} ETH`);
-    console.error(`💡 Deposite ETH no endereço: ${deployer.address}`);
+    console.error(`❌ Saldo insuficiente! Mínimo: ${minRequired} POL`);
+    console.error(`💡 Deposite POL no endereço: ${deployer.address}`);
     process.exit(1);
   }
 
@@ -104,7 +100,7 @@ async function main() {
   console.log("   MetaMask recebeu:", ethers.formatEther(finalRecipient), "BITI");
   console.log("   Owner retém:     ", ethers.formatEther(finalOwner), "BITI\n");
 
-  // ── ETAPA 4: Verificar no Etherscan (se API key disponível) ──────
+  // ── ETAPA 4: Verificar no explorer (se API key disponível) ───────
   if (process.env.ETHERSCAN_API_KEY) {
     console.log("⏳ [4/4] Verificando contrato no Etherscan...");
     try {
@@ -122,7 +118,7 @@ async function main() {
     }
   } else {
     console.log("ℹ️  [4/4] Verificação pulada (sem ETHERSCAN_API_KEY)");
-    console.log("   Para verificar depois: npm run verify:sepolia ou verify:mainnet");
+    console.log("   Para verificar depois: npm run verify:polygon");
   }
 
   // ── Resumo final ─────────────────────────────────────────────────

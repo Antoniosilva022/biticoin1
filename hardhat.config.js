@@ -10,10 +10,6 @@ export default {
     localhost: {
       url: "http://127.0.0.1:8545"
     },
-    sepolia: {
-      url: process.env.SEPOLIA_RPC_URL || "https://sepolia.drpc.org",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
-    },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || "https://eth.llamarpc.com",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
@@ -30,7 +26,6 @@ export default {
   etherscan: {
     apiKey: {
       mainnet: process.env.ETHERSCAN_API_KEY || "",
-      sepolia: process.env.ETHERSCAN_API_KEY || "",
       polygon: process.env.POLYGONSCAN_API_KEY || process.env.ETHERSCAN_API_KEY || "",
       polygonAmoy: process.env.POLYGONSCAN_API_KEY || process.env.ETHERSCAN_API_KEY || ""
     },

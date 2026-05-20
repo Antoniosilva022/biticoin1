@@ -41,17 +41,17 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("🚀 [1/4] Deploy na Sepolia Testnet...\n");
+  console.log("🚀 [1/4] Deploy na Polygon...\n");
 
-  const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
+  const provider = new ethers.JsonRpcProvider(process.env.POLYGON_RPC_URL);
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
   console.log("📋 Carteira:", wallet.address);
   const balance = await provider.getBalance(wallet.address);
   const balanceInEth = parseFloat(ethers.formatEther(balance));
-  console.log("💰 Saldo:", balanceInEth, "SepoliaETH");
+  console.log("💰 Saldo:", balanceInEth, "POL");
   if (balanceInEth < 0.01) {
-    console.log(`\n❌ Saldo insuficiente: ${balanceInEth} SepoliaETH`);
+    console.log(`\n❌ Saldo insuficiente: ${balanceInEth} POL`);
     process.exit(1);
   }
 
@@ -72,10 +72,10 @@ async function main() {
 
   const address = await biticoin.getAddress();
   const totalSupply = await biticoin.totalSupply();
-  console.log("\n🎉 DEPLOY CONCLUÍDO NA SEPOLIA!");
+  console.log("\n🎉 DEPLOY CONCLUÍDO NA POLYGON!");
   console.log("📋 Endereço do contrato:", address);
   console.log("💰 Total Supply:", ethers.formatEther(totalSupply), "BITI");
-  console.log("🔍 Etherscan: https://sepolia.etherscan.io/address/" + address);
+  console.log("🔍 Explorer: https://polygonscan.com/address/" + address);
 
   // Atualiza TOKEN_ADDRESS no .env (opcional: instrução para o usuário)
   console.log("\n⚠️  Atualize o .env: TOKEN_ADDRESS=" + address);
@@ -99,22 +99,22 @@ async function main() {
   await tx.wait();
   console.log("✅ Transferência concluída! Hash:", tx.hash);
 
-  // [3/4] Verificar contrato no Etherscan
-  console.log("\n🔎 [3/4] Verificando contrato no Etherscan...");
+  // [3/4] Verificar contrato no explorer
+  console.log("\n🔎 [3/4] Verificando contrato no explorer...");
   try {
     await hre.run("verify:verify", {
       address,
       constructorArguments: []
     });
     console.log("✅ Contrato verificado!");
-    console.log("🔗 https://sepolia.etherscan.io/address/" + address + "#code");
+    console.log("🔗 https://polygonscan.com/address/" + address + "#code");
   } catch (e) {
     console.log("⚠️  Falha na verificação automática. Verifique manualmente se necessário.");
   }
 
   // [4/4] Instrução para liquidez
   console.log("\n💧 [4/4] Adicione liquidez no Uniswap:");
-  console.log("   npm run liquidity:sepolia");
+  console.log("   npm run liquidity:polygon");
 }
 
 main().catch((error) => {

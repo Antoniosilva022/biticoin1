@@ -1,5 +1,5 @@
 // Exibe informações completas do contrato deployado
-// Uso: npx hardhat run scripts/utils/info.js --network sepolia
+// Uso: npx hardhat run scripts/utils/info.js --network polygon
 //      npx hardhat run scripts/utils/info.js --network mainnet
 //
 // Requer no .env: TOKEN_ADDRESS=0xEnderecoDoContrato
@@ -58,14 +58,12 @@ async function main() {
 
   const explorerBase = hre.network.name === "mainnet"
     ? `https://etherscan.io/address/${tokenAddress}`
-    : hre.network.name === "sepolia"
-      ? `https://sepolia.etherscan.io/address/${tokenAddress}`
-      : hre.network.name === "polygon"
+    : hre.network.name === "polygon"
         ? `https://polygonscan.com/address/${tokenAddress}`
         : hre.network.name === "polygonAmoy"
           ? `https://amoy.polygonscan.com/address/${tokenAddress}`
-          : `https://sepolia.etherscan.io/address/${tokenAddress}`;
-  console.log(`\n🔍 Etherscan:      ${explorerBase}`);
+          : `https://polygonscan.com/address/${tokenAddress}`;
+  console.log(`\n🔍 Explorer:       ${explorerBase}`);
   console.log("\n══════════════════════════════════════");
 }
 

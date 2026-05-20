@@ -50,7 +50,7 @@ async function main() {
   if (routerCode === "0x") {
     console.error("❌ Uniswap V2 Router não encontrado nesta rede.");
     console.error("   Endereço configurado:", UNISWAP_V2_ROUTER);
-    console.error("   Dica: crie pool direto no app.uniswap.org (V3/V4) para Sepolia.");
+    console.error("   Dica: crie pool direto no app.uniswap.org (V3/V4) na rede Polygon.");
     process.exit(1);
   }
 
@@ -113,14 +113,10 @@ async function main() {
 
   console.log("\n✅ Liquidez adicionada com sucesso!");
   console.log("📦 Bloco:", receipt.blockNumber);
-  console.log("🔗 Ver no Etherscan:");
-  if (network === "mainnet") {
-    console.log(`   https://etherscan.io/tx/${tx.hash}`);
-    console.log(`\n🦄 Par no Uniswap:`);
-    console.log(`   https://app.uniswap.org/#/swap?outputCurrency=${tokenAddress}`);
-  } else {
-    console.log(`   https://sepolia.etherscan.io/tx/${tx.hash}`);
-  }
+  console.log("🔗 Ver no explorer:");
+  console.log(`   https://polygonscan.com/tx/${tx.hash}`);
+  console.log(`\n🦄 Par no Uniswap:`);
+  console.log(`   https://app.uniswap.org/#/swap?chain=polygon&outputCurrency=${tokenAddress}`);
 }
 
 main().catch((err) => {

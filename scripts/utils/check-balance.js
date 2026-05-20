@@ -10,13 +10,6 @@ async function main() {
       minBalance: 0.01,
       fundingHint: "💡 Deposite ETH via Binance, Coinbase, etc."
     },
-    sepolia: {
-      label: "sepolia",
-      rpcUrl: process.env.SEPOLIA_RPC_URL || "https://sepolia.drpc.org",
-      symbol: "SepoliaETH",
-      minBalance: 0.01,
-      fundingHint: "💡 Faucet: https://sepoliafaucet.com"
-    },
     polygon: {
       label: "polygon",
       rpcUrl: process.env.POLYGON_RPC_URL || "https://polygon-bor-rpc.publicnode.com",
@@ -33,7 +26,7 @@ async function main() {
     }
   };
 
-  const network = configs[hre.network.name] || configs.sepolia;
+  const network = configs[hre.network.name] || configs.polygon;
 
   console.log(`💰 Verificando saldo na rede: ${network.label}\n`);
 

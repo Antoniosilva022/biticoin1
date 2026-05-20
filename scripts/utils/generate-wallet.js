@@ -11,11 +11,10 @@ async function main() {
   console.log("\n⚠️  IMPORTANTE:");
   console.log("- Guarde esta chave privada em local seguro!");
   console.log("- Nunca compartilhe com ninguém!");
-  console.log("- Use apenas para testes em testnet");
-  console.log("\n💰 Para obter SepoliaETH:");
-  console.log("1. Vá para: https://sepoliafaucet.com");
-  console.log("2. Cole o endereço acima");
-  console.log("3. Solicite ~0.5 ETH para cobrir gas fees");
+  console.log("- Use apenas em ambiente seguro e com baixo saldo operacional");
+  console.log("\n💰 Para operar na Polygon:");
+  console.log("1. Envie POL para o endereço acima");
+  console.log("2. Use saldo para taxas de rede (gas)");
 }
 
 main()

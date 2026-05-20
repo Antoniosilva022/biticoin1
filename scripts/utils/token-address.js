@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 
 const TOKEN_ENV_BY_NETWORK = {
   mainnet: "TOKEN_ADDRESS_MAINNET",
-  sepolia: "TOKEN_ADDRESS_SEPOLIA",
   polygon: "TOKEN_ADDRESS_POLYGON",
   polygonAmoy: "TOKEN_ADDRESS_AMOY",
   localhost: "TOKEN_ADDRESS_LOCALHOST",
