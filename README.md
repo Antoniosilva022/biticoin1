@@ -43,9 +43,24 @@ Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de seguran
 - Whitepaper PT: `site/whitepaper/whitepaper-pt.html`
 - Whitepaper EN: `site/whitepaper/whitepaper-en.html`
 
+## Requisitos de Ambiente
+
+- Node.js **22.13.0+** (obrigatório para Hardhat 3)
+- npm 10+
+- Arquivos de versionamento de runtime incluídos:
+   - `.nvmrc`
+   - `.node-version`
+
+Se você usa nvm:
+
+```bash
+nvm use
+```
+
 ## Instalação
 
 ```bash
+nvm use
 npm install
 ```
 
@@ -101,6 +116,8 @@ biticoin1/
 ```bash
 npm run test
 ```
+
+> Em Hardhat 3, o comando `npm run test` executa os testes Solidity e também os testes JavaScript (Mocha) automaticamente.
 
 ### Compilar contrato
 ```bash
@@ -177,12 +194,27 @@ npm run info:polygon
 ✅ Contrato em produção Polygon: `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57`  
 ✅ Modo operacional Polygon-only aplicado nos scripts críticos  
 ✅ Auditoria de segurança concluída (`AUDIT_REPORT.md`) — 72/72 testes, 0 vulnerabilidades críticas  
+✅ Migração de tooling concluída para **Hardhat 3** + plugins compatíveis  
+✅ Requisito de runtime definido para **Node 22.13.0+**  
 ✅ Site oficial criado (`site/index.html`)  
 ✅ Whitepaper PT e EN criados  
 ✅ Tokenomics: 80% imediato + 20% vesting 180 dias  
 ✅ Fluxos de consulta e operação em Polygon validados  
 ✅ Teste de vulnerabilidades: 47/47 vetores auditados (reentrância, overflow, bypass de pause, etc.)  
 ✅ Ambiente focado em produção Polygon  
+
+### Dependências (estado atual)
+
+- `hardhat`: `^3.7.0`
+- `@nomicfoundation/hardhat-ethers`: `^4.0.12`
+- `@nomicfoundation/hardhat-ethers-chai-matchers`: `^3.0.9`
+- `@nomicfoundation/hardhat-mocha`: `^3.0.8`
+- `@nomicfoundation/hardhat-verify`: `^3.0.18`
+
+### Segurança de dependências (npm audit)
+
+- Estado atual: **15 vulnerabilidades** (9 low, 5 moderate, 1 high, 0 critical)
+- Observação: os alertas são majoritariamente do ecossistema de ferramentas de desenvolvimento, não de lógica do contrato já implantado.
 
 ## Roteiro para Listagem (CoinGecko / CoinMarketCap / Coinbase)
 

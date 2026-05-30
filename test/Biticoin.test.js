@@ -1,11 +1,12 @@
 import { expect } from "chai";
-import hre from "hardhat";
-const { ethers } = hre;
+import { network } from "hardhat";
 
 describe("Biticoin", function () {
+  let ethers;
   let token, owner, addr1, addr2;
 
   beforeEach(async function () {
+    ({ ethers } = await network.create());
     [owner, addr1, addr2] = await ethers.getSigners();
     const Biticoin = await ethers.getContractFactory("Biticoin");
     token = await Biticoin.deploy();
@@ -84,7 +85,7 @@ describe("Biticoin", function () {
     expect(await token.paused()).to.equal(true);
     await expect(
       token.transfer(addr1.address, ethers.parseEther("100"))
-    ).to.be.reverted;
+    ).to.be.revert(ethers);
   });
 
   it("deve retomar transferências após unpause", async function () {
@@ -115,19 +116,19 @@ describe("Biticoin", function () {
   it("não deve permitir mint por não-owner", async function () {
     await expect(
       token.connect(addr1).mint(addr1.address, ethers.parseEther("1000"))
-    ).to.be.reverted;
+    ).to.be.revert(ethers);
   });
 
   it("não deve permitir pause por não-owner", async function () {
-    await expect(token.connect(addr1).pause()).to.be.reverted;
+    await expect(token.connect(addr1).pause()).to.be.revert(ethers);
   });
 
   it("não deve permitir setTransferFee por não-owner", async function () {
-    await expect(token.connect(addr1).setTransferFee(100)).to.be.reverted;
+    await expect(token.connect(addr1).setTransferFee(100)).to.be.revert(ethers);
   });
 
   it("não deve permitir releaseVesting por não-owner", async function () {
-    await expect(token.connect(addr1).releaseVesting()).to.be.reverted;
+    await expect(token.connect(addr1).releaseVesting()).to.be.revert(ethers);
   });
 
   // ── Vesting após prazo ───────────────────────────────────────────
@@ -193,6 +194,6 @@ describe("Biticoin", function () {
     await token.transfer(addr1.address, amount);
     await expect(
       token.connect(addr2).transferFrom(addr1.address, owner.address, amount)
-    ).to.be.reverted;
+    ).to.be.revert(ethers);
   });
 });
