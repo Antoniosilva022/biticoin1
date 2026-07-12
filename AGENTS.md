@@ -33,10 +33,10 @@ Antes de propor qualquer mudanca, consulte a documentacao oficial do projeto:
 
 - Nunca expor ou commitar segredos de `.env`.
 - Tratar comandos de mainnet e transferencia como alto risco:
-	- `deploy:mainnet`
-	- `deploy:polygon`
-	- `launch:mainnet:auto`
-	- scripts de transferencia
+  - `deploy:mainnet`
+  - `deploy:polygon`
+  - `launch:mainnet:auto`
+  - scripts de transferencia
 - Antes de qualquer orientacao para mainnet, exigir validacao em testnet (`sepolia` ou `polygonAmoy`) e `npm run test` com sucesso.
 - Nao alterar constantes de tokenomics em `contracts/Biticoin.sol` sem pedido explicito.
 
@@ -65,4 +65,4 @@ Antes de propor qualquer mudanca, consulte a documentacao oficial do projeto:
 
 - `scripts/utils/verify.js` exige `POLYGONSCAN_API_KEY` para redes Polygon.
 - `scripts/utils/send-90-percent.js` move uma parcela alta do saldo do owner e e destrutivo com destinatario incorreto.
-- `scripts/deploy/launch-mainnet.js` contem retry de RPC; manter esse comportamento de resiliencia.
+- `scripts/deploy/launch-polygon.js` contem retry de RPC; manter esse comportamento de resiliencia.

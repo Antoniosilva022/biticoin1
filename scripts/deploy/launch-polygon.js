@@ -41,17 +41,36 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("🚀 [1/4] Deploy na Mainnet Ethereum...\n");
+  if (!process.env.PRIVATE_KEY) {
+    console.error("❌ PRIVATE_KEY não definida no .env");
+    process.exit(1);
+  }
 
-  const provider = new ethers.JsonRpcProvider(process.env.MAINNET_RPC_URL);
+  if (!process.env.RECIPIENT_ADDRESS) {
+    console.error("❌ RECIPIENT_ADDRESS não definido no .env");
+    process.exit(1);
+  }
+
+  if (!ethers.isAddress(process.env.RECIPIENT_ADDRESS)) {
+    console.error("❌ RECIPIENT_ADDRESS inválido no .env");
+    process.exit(1);
+  }
+
+  console.log("🚀 [1/4] Deploy na Polygon...\n");
+
+  const provider = new ethers.JsonRpcProvider(
+    process.env.POLYGON_RPC_URL || "https://polygon-rpc.com"
+  );
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
   console.log("📋 Carteira:", wallet.address);
   const balance = await provider.getBalance(wallet.address);
-  const balanceInEth = parseFloat(ethers.formatEther(balance));
-  console.log("💰 Saldo:", balanceInEth, "ETH");
-  if (balanceInEth < 0.01) {
-    console.log(`\n❌ Saldo insuficiente: ${balanceInEth} ETH`);
+  const balanceInPol = parseFloat(ethers.formatEther(balance));
+  console.log("💰 Saldo:", balanceInPol, "POL");
+  if (balanceInPol < 1) {
+    console.log(`\n❌ Saldo insuficiente: ${balanceInPol} POL`);
+    console.log("💡 Deposite pelo menos 2 POL nesta carteira:");
+    console.log("📋", wallet.address);
     process.exit(1);
   }
 
@@ -72,20 +91,17 @@ async function main() {
 
   const address = await biticoin.getAddress();
   const totalSupply = await biticoin.totalSupply();
-  console.log("\n🎉 DEPLOY CONCLUÍDO NA MAINNET!");
+  console.log("\n🎉 DEPLOY CONCLUÍDO NA POLYGON!");
   console.log("📋 Endereço do contrato:", address);
   console.log("💰 Total Supply:", ethers.formatEther(totalSupply), "BITI");
-  console.log("🔍 Etherscan: https://etherscan.io/address/" + address);
+  console.log("🔍 Explorer: https://polygonscan.com/address/" + address);
 
   // Atualiza TOKEN_ADDRESS no .env (opcional: instrução para o usuário)
-  console.log("\n⚠️  Atualize o .env: TOKEN_ADDRESS=" + address);
+  console.log("\n⚠️  Atualize o .env: TOKEN_ADDRESS_POLYGON=" + address);
+  console.log("   Opcionalmente mantenha TOKEN_ADDRESS como fallback.");
 
   // [2/4] Transferir 90% do saldo disponível para MetaMask
   const recipient = process.env.RECIPIENT_ADDRESS;
-  if (!recipient) {
-    console.log("❌ RECIPIENT_ADDRESS não definido no .env");
-    process.exit(1);
-  }
 
   // Recriar instância explicitamente para garantir ABI e signer corretos
   const artifact = await hre.artifacts.readArtifact("Biticoin");
@@ -99,22 +115,26 @@ async function main() {
   await tx.wait();
   console.log("✅ Transferência concluída! Hash:", tx.hash);
 
-  // [3/4] Verificar contrato no Etherscan
-  console.log("\n🔎 [3/4] Verificando contrato no Etherscan...");
-  try {
-    await hre.run("verify:verify", {
-      address,
-      constructorArguments: []
-    });
-    console.log("✅ Contrato verificado!");
-    console.log("🔗 https://etherscan.io/address/" + address + "#code");
-  } catch (e) {
-    console.log("⚠️  Falha na verificação automática. Verifique manualmente se necessário.");
+  // [3/4] Verificar contrato no explorer
+  console.log("\n🔎 [3/4] Verificando contrato no explorer...");
+  if (!process.env.POLYGONSCAN_API_KEY && !process.env.ETHERSCAN_API_KEY) {
+    console.log("⚠️  Verificação automática ignorada: defina POLYGONSCAN_API_KEY ou ETHERSCAN_API_KEY no .env.");
+  } else {
+    try {
+      await hre.run("verify:verify", {
+        address,
+        constructorArguments: []
+      });
+      console.log("✅ Contrato verificado!");
+      console.log("🔗 https://polygonscan.com/address/" + address + "#code");
+    } catch (e) {
+      console.log("⚠️  Falha na verificação automática. Verifique manualmente se necessário.");
+    }
   }
 
   // [4/4] Instrução para liquidez
   console.log("\n💧 [4/4] Adicione liquidez no Uniswap:");
-  console.log("   npm run liquidity:mainnet");
+  console.log("   npm run liquidity:polygon");
 }
 
 main().catch((error) => {

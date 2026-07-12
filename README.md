@@ -4,9 +4,10 @@ Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de seguran
 
 ## Modo Operacional Atual (Polygon-only)
 
-- Scripts críticos de deploy/launch/transferência/liquidez estão bloqueados fora de `--network polygon`.
+- Operações de produção usam Polygon (`--network polygon`).
+- Validação prévia e testes de rede continuam disponíveis em Polygon Amoy (`--network polygonAmoy`) e local.
 - Endereço oficial em produção (Polygon): `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57`.
-- Execuções em redes fora da Polygon foram desativadas por segurança operacional.
+- Fluxos legados de Ethereum mainnet permanecem desativados por segurança operacional.
 
 ## Funcionalidades
 
@@ -22,20 +23,20 @@ Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de seguran
 
 ## Tokenomics
 
-| Alocação           | Quantidade       | %    | Detalhe                        |
-|--------------------|-----------------|------|--------------------------------|
-| Circulação inicial | 79,2 bilhões    | 80%  | Transferido para MetaMask      |
-| Vesting fundador   | 19,8 bilhões    | 20%  | Bloqueado 180 dias no contrato |
-| **Total inicial**  | **99 bilhões**  | 100% |                                |
-| Supply máximo      | 110 bilhões     | —    | Teto para futuros mints        |
+| Alocação | Quantidade | % | Detalhe |
+| --- | --- | --- | --- |
+| Circulação inicial | 79,2 bilhões | 80% | Transferido para MetaMask |
+| Vesting fundador | 19,8 bilhões | 20% | Bloqueado 180 dias no contrato |
+| **Total inicial** | **99 bilhões** | 100% | - |
+| Supply máximo | 110 bilhões | — | Teto para futuros mints |
 
 ## Contrato em Produção
 
-| Rede    | Endereço                                     | Status         |
-|---------|----------------------------------------------|----------------|
+| Rede | Endereço | Status |
+| --- | --- | --- |
 | Polygon | `0xd7e0cef1511a7eef7fc57998214fb17a270a8b57` | ✅ Em produção |
 
-- Polygonscan: https://polygonscan.com/address/0xd7e0cef1511a7eef7fc57998214fb17a270a8b57
+- Polygonscan: <https://polygonscan.com/address/0xd7e0cef1511a7eef7fc57998214fb17a270a8b57>
 
 ## Site e Whitepaper
 
@@ -47,9 +48,7 @@ Uma criptomoeda ERC-20 baseada em conceitos do Bitcoin, com auditoria de seguran
 
 - Node.js **22.13.0+** (obrigatório para Hardhat 3)
 - npm 10+
-- Arquivos de versionamento de runtime incluídos:
-   - `.nvmrc`
-   - `.node-version`
+- Arquivos de versionamento de runtime incluídos: `.nvmrc` e `.node-version`
 
 Se você usa nvm:
 
@@ -66,7 +65,7 @@ npm install
 
 Configure o `.env` (use `.env.example` como base):
 
-```
+```text
 POLYGON_RPC_URL=https://polygon-rpc.com
 PRIVATE_KEY=sua_chave_privada
 RECIPIENT_ADDRESS=0xSuaMetaMask
@@ -80,19 +79,20 @@ LIQUIDITY_ETH_AMOUNT=0.04
 ```
 
 > Gere uma nova carteira com: `npm run wallet:new`
-
-> Recomendado: use `TOKEN_ADDRESS_POLYGON` para operação segura em produção. O `TOKEN_ADDRESS` continua como fallback.
+> Recomendado: use `TOKEN_ADDRESS_POLYGON` para produção e `TOKEN_ADDRESS_AMOY` para validação em testnet. O `TOKEN_ADDRESS` continua como fallback.
+> Para verify em Polygon, prefira `POLYGONSCAN_API_KEY`. `ETHERSCAN_API_KEY` permanece como fallback/compatibilidade.
 
 ## Estrutura do Projeto
 
-```
+```text
 biticoin1/
 ├── contracts/Biticoin.sol           # Contrato ERC-20 principal
 ├── scripts/
 │   ├── deploy/
+│   │   ├── deploy-amoy.js              # Deploy na Polygon Amoy (testnet)
 │   │   ├── deploy-local.js              # Deploy na rede local
 │   │   ├── deploy-polygon.js            # Deploy na Polygon
-│   │   └── launch-mainnet.js            # Launch automático (deploy + transfer + verify) em modo Polygon-only
+│   │   └── launch-polygon.js            # Launch automático de produção na Polygon
 │   └── utils/
 │       ├── generate-wallet.js           # Gerar nova carteira
 │       ├── check-balance.js             # Verificar saldo da carteira por rede
@@ -113,6 +113,7 @@ biticoin1/
 ## Comandos
 
 ### Testes
+
 ```bash
 npm run test
 ```
@@ -120,6 +121,7 @@ npm run test
 > Em Hardhat 3, o comando `npm run test` executa os testes Solidity e também os testes JavaScript (Mocha) automaticamente.
 
 ### Compilar contrato
+
 ```bash
 npm run compile
 ```
@@ -128,7 +130,8 @@ npm run compile
 
 ```bash
 npm run wallet:new          # Gerar nova carteira Ethereum
-npm run balance:polygon     # Verificar saldo MATIC na Polygon
+npm run balance:polygon     # Verificar saldo POL na Polygon
+npm run balance:amoy        # Verificar saldo AmoyPOL na Polygon Amoy
 ```
 
 ### Launch Automático
@@ -142,6 +145,7 @@ npm run launch:polygon:auto
 ### Deploy Manual
 
 ```bash
+npm run deploy:amoy         # Polygon Amoy (testnet)
 npm run deploy:local        # Local (sem custo, para desenvolvimento)
 npm run deploy:polygon      # Polygon (produção)
 ```
@@ -166,9 +170,10 @@ npm run liquidity:polygon   # Polygon
 ```
 
 O script irá:
+
 1. Aprovar o Uniswap Router para gastar seus BITI
 2. Adicionar liquidez no par BITI/ETH
-3. Exibir o link do par e da transação no Etherscan
+3. Exibir o link do par e da transação no explorer da rede
 
 > Necessário ter saldo suficiente de BITI e ETH na carteira do deployer.
 
@@ -186,7 +191,7 @@ npm run info:polygon
    - Símbolo: `BITI`
    - Decimais: `18`
 3. Verifique em:
-   - Polygon: https://polygonscan.com
+   - Polygon: <https://polygonscan.com>
 
 ## Status
 
@@ -213,8 +218,9 @@ npm run info:polygon
 
 ### Segurança de dependências (npm audit)
 
-- Estado atual: **15 vulnerabilidades** (9 low, 5 moderate, 1 high, 0 critical)
-- Observação: os alertas são majoritariamente do ecossistema de ferramentas de desenvolvimento, não de lógica do contrato já implantado.
+- Runtime (`npm audit --omit=dev`): **0 vulnerabilidades**.
+- Dependências completas (`npm audit`): **16 vulnerabilidades** (10 low, 3 moderate, 3 high), concentradas em tooling de desenvolvimento.
+- Observação: os alertas atuais não afetam a lógica do contrato já implantado, mas merecem acompanhamento nas dependências de build/teste.
 
 ## Roteiro para Listagem (CoinGecko / CoinMarketCap / Coinbase)
 
@@ -237,6 +243,7 @@ npm run info:polygon
 - Dependências de desenvolvimento podem ter alertas, mas **não afetam o contrato na blockchain**
 
 Este projeto é para fins educacionais. Para uso em produção:
+
 - Nunca armazene nem compartilhe chaves privadas em arquivos versionados ou expostos.
 - Mantenha o arquivo `.env` fora do repositório e use gerenciamento seguro de segredos.
 - Realize auditoria de segurança profissional antes de qualquer mudança de rede ou novo deploy.

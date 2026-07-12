@@ -13,9 +13,9 @@ async function main() {
     polygon: {
       label: "polygon",
       rpcUrl: process.env.POLYGON_RPC_URL || "https://polygon-bor-rpc.publicnode.com",
-      symbol: "MATIC",
+      symbol: "POL",
       minBalance: 1,
-      fundingHint: "💡 Deposite MATIC via Binance, Coinbase, etc."
+      fundingHint: "💡 Deposite POL via Binance, Coinbase, etc."
     },
     polygonAmoy: {
       label: "polygonAmoy",

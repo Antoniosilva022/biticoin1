@@ -10,12 +10,12 @@ async function main() {
   console.log("📋 Carteira:", wallet.address);
 
   const balance = await provider.getBalance(wallet.address);
-  const balanceInMatic = parseFloat(ethers.formatEther(balance));
-  console.log("💰 Saldo:", balanceInMatic, "MATIC");
+  const balanceInPol = parseFloat(ethers.formatEther(balance));
+  console.log("💰 Saldo:", balanceInPol, "POL");
 
-  if (balanceInMatic < 1) {
-    console.log(`\n❌ Saldo insuficiente: ${balanceInMatic} MATIC`);
-    console.log("💡 Deposite pelo menos 2 MATIC nesta carteira:");
+  if (balanceInPol < 1) {
+    console.log(`\n❌ Saldo insuficiente: ${balanceInPol} POL`);
+    console.log("💡 Deposite pelo menos 2 POL nesta carteira:");
     console.log("📋", wallet.address);
     process.exit(1);
   }
@@ -37,7 +37,8 @@ async function main() {
   console.log("🔍 Polygonscan: https://polygonscan.com/address/" + address);
 
   console.log("\n📝 Próximos passos:");
-  console.log("1. Atualize TOKEN_ADDRESS no .env com:", address);
+  console.log("1. Atualize TOKEN_ADDRESS_POLYGON no .env com:", address);
+  console.log("   Opcionalmente mantenha TOKEN_ADDRESS como fallback.");
   console.log("2. Rode: npm run transfer:90:polygon");
   console.log("3. Verifique o contrato: npm run verify:polygon");
   console.log("4. Adicione liquidez no Uniswap V3 (polygon)");

@@ -1,10 +1,11 @@
-// Verifica o código-fonte do contrato no Etherscan após deploy
+// Verifica o código-fonte do contrato no explorer após deploy
 // Uso: npx hardhat run scripts/utils/verify.js --network polygon
 //      npx hardhat run scripts/utils/verify.js --network mainnet
 //
 // Requer no .env:
 //   TOKEN_ADDRESS=0xEnderecoDoContrato
-//   ETHERSCAN_API_KEY=suaChaveEtherscan
+//   POLYGONSCAN_API_KEY=suaChavePolygonscan (Polygon/Amoy)
+//   ETHERSCAN_API_KEY=suaChaveEtherscan (mainnet)
 
 import hre from "hardhat";
 import { resolveTokenAddress } from "./token-address.js";

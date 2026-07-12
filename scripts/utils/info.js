@@ -1,8 +1,8 @@
 // Exibe informações completas do contrato deployado
 // Uso: npx hardhat run scripts/utils/info.js --network polygon
-//      npx hardhat run scripts/utils/info.js --network mainnet
+//      npx hardhat run scripts/utils/info.js --network polygonAmoy
 //
-// Requer no .env: TOKEN_ADDRESS=0xEnderecoDoContrato
+// Requer no .env: TOKEN_ADDRESS_* da rede alvo ou TOKEN_ADDRESS como fallback
 
 import hre from "hardhat";
 const { ethers } = hre;
@@ -12,10 +12,9 @@ async function main() {
   const { tokenAddress, sourceEnvVar } = resolveTokenAddress(hre.network.name);
 
   const token = await ethers.getContractAt("Biticoin", tokenAddress);
-  const [signer] = await ethers.getSigners();
 
   console.log("📊 ══════════════════════════════════════");
-  console.log("       BITICOIN (BITI) — Info do Contrato");
+  console.log("       BITI (Biti) — Info do Contrato");
   console.log("══════════════════════════════════════\n");
 
   const [name, symbol, decimals, totalSupply, maxSupply, owner,

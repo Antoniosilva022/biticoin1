@@ -28,7 +28,7 @@ Evitar comandos destrutivos ou caros em operacoes de rede.
 
 - Verify em redes Polygon exige `POLYGONSCAN_API_KEY` (validado em [scripts/utils/verify.js](../../scripts/utils/verify.js)).
 - O fluxo send-90-percent e destrutivo com destinatario incorreto.
-- Preservar retry em [scripts/deploy/launch-mainnet.js](../../scripts/deploy/launch-mainnet.js) para falhas transientes de RPC.
+- Preservar retry em [scripts/deploy/launch-polygon.js](../../scripts/deploy/launch-polygon.js) para falhas transientes de RPC.
 
 ## Criterio de Conclusao
 

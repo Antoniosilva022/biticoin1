@@ -2,9 +2,14 @@ import hre from "hardhat";
 const { ethers } = hre;
 
 async function main() {
-  if (hre.network.name !== "polygon") {
+  if (hre.network.name !== "polygonAmoy") {
     console.error("❌ Operação bloqueada: este repositório está em modo Polygon-only.");
-    console.error("   Use scripts com --network polygon.");
+    console.error("   Use scripts com --network polygonAmoy.");
+    process.exit(1);
+  }
+
+  if (!process.env.PRIVATE_KEY) {
+    console.error("❌ PRIVATE_KEY não definida no .env");
     process.exit(1);
   }
 
@@ -45,7 +50,8 @@ async function main() {
   console.log("🔍 Explorer: https://amoy.polygonscan.com/address/" + address);
 
   console.log("\n📝 Próximos passos:");
-  console.log("1. Atualize TOKEN_ADDRESS no .env com:", address);
+  console.log("1. Atualize TOKEN_ADDRESS_AMOY no .env com:", address);
+  console.log("   Opcionalmente mantenha TOKEN_ADDRESS como fallback.");
   console.log("2. Rode: npm run transfer:90:amoy");
   console.log("3. Verifique o contrato: npm run verify:amoy");
 }

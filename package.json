@@ -25,7 +25,7 @@
     "pool:polygon": "npx hardhat run scripts/utils/create-pool-v3.js --network polygon",
     "transfer:position": "npx hardhat run scripts/utils/transfer-position.js --network polygon",
     "liquidity:polygon": "npx hardhat run scripts/utils/add-liquidity.js --network polygon",
-    "launch:polygon:auto": "npx hardhat run scripts/deploy/launch-mainnet.js --network polygon",
+    "launch:polygon:auto": "npx hardhat run scripts/deploy/launch-polygon.js --network polygon",
     "transfer:90": "npx hardhat run scripts/utils/send-90-percent.js --network polygon",
     "transfer:90:main": "node -e \"console.error('Bloqueado: transferencia mainnet desativada. Use npm run transfer:90:polygon.'); process.exit(1)\"",
     "verify:mainnet": "node -e \"console.error('Bloqueado: verify mainnet desativado. Use npm run verify:polygon.'); process.exit(1)\"",

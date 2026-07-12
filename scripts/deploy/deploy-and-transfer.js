@@ -12,7 +12,8 @@
  *   RECIPIENT_ADDRESS   - endereço MetaMask que receberá os 90%
  *
  * Variáveis opcionais:
- *   ETHERSCAN_API_KEY   - para verificar o contrato automaticamente
+ *   POLYGONSCAN_API_KEY - para verificar o contrato automaticamente em Polygon
+ *   ETHERSCAN_API_KEY   - fallback compatível para verify
  */
 
 import hre from "hardhat";
@@ -101,8 +102,8 @@ async function main() {
   console.log("   Owner retém:     ", ethers.formatEther(finalOwner), "BITI\n");
 
   // ── ETAPA 4: Verificar no explorer (se API key disponível) ───────
-  if (process.env.ETHERSCAN_API_KEY) {
-    console.log("⏳ [4/4] Verificando contrato no Etherscan...");
+  if (process.env.POLYGONSCAN_API_KEY || process.env.ETHERSCAN_API_KEY) {
+    console.log("⏳ [4/4] Verificando contrato no explorer...");
     try {
       await hre.run("verify:verify", {
         address: tokenAddress,
@@ -117,7 +118,7 @@ async function main() {
       }
     }
   } else {
-    console.log("ℹ️  [4/4] Verificação pulada (sem ETHERSCAN_API_KEY)");
+    console.log("ℹ️  [4/4] Verificação pulada (sem POLYGONSCAN_API_KEY ou ETHERSCAN_API_KEY)");
     console.log("   Para verificar depois: npm run verify:polygon");
   }
 

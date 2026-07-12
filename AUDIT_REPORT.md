@@ -146,7 +146,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 
 | Operação | Status |
 |---|---|
-| `(INITIAL_SUPPLY * 90) / 100` no constructor | ✅ Seguro — Solidity 0.8 protege nativamente |
+| `(INITIAL_SUPPLY * 80) / 100` no constructor | ✅ Seguro — Solidity 0.8 protege nativamente |
 | `(value * transferFeeBps) / 10000` em `_update()` | ✅ Seguro — resultado nunca excede `value` |
 | `totalSupply() + amount` em `mint()` | ✅ Seguro — reverteria antes de overflow |
 | `value -= fee` em `_update()` | ✅ Seguro — `fee` é sempre `< value` pela divisão |
@@ -191,7 +191,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 
 | Requisito | Status |
 |---|---|
-| `name()` | ✅ "Biticoin" |
+| `name()` | ✅ "Biti" |
 | `symbol()` | ✅ "BITI" |
 | `decimals()` | ✅ 18 (padrão OpenZeppelin) |
 | `totalSupply()` | ✅ |
@@ -300,11 +300,11 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 
 ## 7. Recomendações Prioritárias
 
-### Antes do deploy na mainnet
+### Antes do deploy em produção (Polygon)
 1. ✅ Corrigir BITI-01 — **feito**
 2. Confirmar que a chave privada do owner será armazenada com segurança (hardware wallet)
 
-### Após deploy na mainnet
+### Após deploy em produção (Polygon)
 3. Transferir ownership para uma **multisig wallet** (Gnosis Safe com 2/3 ou 3/5 signatários)
 4. Documentar os riscos de centralização no whitepaper público
 

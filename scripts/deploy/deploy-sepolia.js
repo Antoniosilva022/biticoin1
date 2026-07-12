@@ -1,46 +1,7 @@
-import hre from "hardhat";
-const { ethers } = hre;
-
 async function main() {
-  if (hre.network.name !== "polygon") {
-    console.error("❌ Operação bloqueada: este repositório está em modo Polygon-only.");
-    console.error("   Use scripts com --network polygon.");
-    process.exit(1);
-  }
-
-  console.log("🚀 Deploy na Polygon...\n");
-
-  const provider = new ethers.JsonRpcProvider(process.env.POLYGON_RPC_URL);
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-
-  console.log("📋 Carteira:", wallet.address);
-
-  const balance = await provider.getBalance(wallet.address);
-  const balanceInEth = parseFloat(ethers.formatEther(balance));
-  console.log("💰 Saldo:", balanceInEth, "POL");
-
-  if (balanceInEth < 0.01) {
-    console.log("\n❌ Saldo insuficiente!");
-    console.log("💡 Envie POL para a carteira de deploy.");
-    console.log("📋 Endereço:", wallet.address);
-    process.exit(1);
-  }
-
-  console.log("✅ Saldo OK!\n");
-
-  const Biticoin = await ethers.getContractFactory("Biticoin");
-  const biticoin = await Biticoin.deploy();
-
-  console.log("⏳ Aguardando confirmação...");
-  await biticoin.waitForDeployment();
-
-  const address = await biticoin.getAddress();
-  const totalSupply = await biticoin.totalSupply();
-
-  console.log("\n🎉 Deploy concluído!");
-  console.log("📋 Endereço do contrato:", address);
-  console.log("💰 Total Supply:", ethers.formatEther(totalSupply), "BITI");
-  console.log("🔍 Explorer: https://polygonscan.com/address/" + address);
+  console.error("❌ Script legado desativado: deploy-sepolia.js não é compatível com o modo Polygon-only.");
+  console.error("   Use npm run deploy:amoy para validação em testnet.");
+  process.exit(1);
 }
 
 main()
