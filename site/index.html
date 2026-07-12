@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Biti (BITI) — A Nova Era das Criptomoedas</title>
-  <meta name="description" content="Token ERC-20 inspirado no Bitcoin, com vesting, auditoria, supply deflacionário e foco em comunidade. Compre BITI e faça parte da revolução Web3!"/>
+  <meta name="description" content="Token ERC-20 inspirado no Bitcoin, com bloqueio programado, auditoria, oferta deflacionária e foco em comunidade. Compre BITI e faça parte da revolução Web3!"/>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -50,6 +50,12 @@
       position: absolute;
       inset: 0;
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero > * {
+      position: relative;
+      z-index: 1;
     }
     .logo-circle {
       width: 120px;
@@ -220,6 +226,41 @@
     .roadmap-content { background: var(--card); border: 1px solid #ffffff12; border-radius: 12px; padding: 20px 24px; flex: 1; }
     .roadmap-content h3 { font-size: 1.1rem; margin-bottom: 6px; }
     .roadmap-content p { font-size: 0.9rem; color: #888; }
+    .phase-checklist {
+      list-style: none;
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .phase-checklist li {
+      font-size: 0.88rem;
+      color: #b6b6b6;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid #ffffff10;
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #0f0f19;
+    }
+    .phase-checklist a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+    .phase-checklist a:hover {
+      text-decoration: underline;
+    }
+    .phase-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+    .phase-status.done { background: #00e5ff22; color: var(--cyan); }
+    .phase-status.progress { background: #ff2d7822; color: var(--pink); }
+    .phase-status.todo { background: #a259ff22; color: var(--purple); }
     .badge { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-left: 10px; }
     .badge.done { background: #00e5ff22; color: var(--cyan); }
     .badge.pending { background: #ff2d7822; color: var(--pink); }
@@ -311,14 +352,15 @@
   <header class="hero">
     <img src="img/biticoin-logo.svg" alt="Biticoin Logo" style="width:130px;height:130px;margin-bottom:24px;filter:drop-shadow(0 0 30px #ff6a0099);animation:pulse 3s ease-in-out infinite;"/>
     <h1>BITI</h1>
-    <p class="tagline">Token ERC-20 inspirado no Bitcoin — rápido, transparente, deflacionário e com vesting seguro. Faça parte da nova era Web3!</p>
+    <p class="tagline">Token ERC-20 inspirado no Bitcoin — rápido, transparente, deflacionário e com bloqueio programado seguro. Faça parte da nova era Web3!</p>
     <div class="buttons">
       <a href="https://app.uniswap.org/swap?chain=polygon&outputCurrency=0xD7E0CEf1511a7eEF7Fc57998214fB17a270A8b57" target="_blank" class="btn btn-primary">Comprar BITI (Polygon)</a>
       <a href="https://polygonscan.com/address/0xD7E0CEf1511a7eEF7Fc57998214fB17a270A8b57#code" target="_blank" class="btn btn-secondary">Ver Contrato</a>
     </div>
     <div style="margin-top:24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-      <a href="https://t.me/bititocke" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">💬 Telegram</a>
-      <a href="https://x.com/bititocken" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">🐦 X / Twitter</a>
+      <a href="https://t.me/bititocken" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">💬 Telegram</a>
+      <a href="https://discord.gg/CSab49XYKK" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">🎮 Discord</a>
+      <a href="https://x.com/bititocken" target="_blank" class="link-card" style="padding:8px 18px; font-size:1rem;">🐦 X</a>
     </div>
   </header>
 
@@ -326,11 +368,11 @@
   <div class="stats">
     <div class="stat-card">
       <div class="stat-value">99B</div>
-      <div class="stat-label">Supply Inicial</div>
+      <div class="stat-label">Oferta Inicial</div>
     </div>
     <div class="stat-card">
       <div class="stat-value">110B</div>
-      <div class="stat-label">Supply Máximo</div>
+      <div class="stat-label">Oferta Máxima</div>
     </div>
     <div class="stat-card">
       <div class="stat-value">0–5%</div>
@@ -348,27 +390,27 @@
 
   <!-- TOKENOMICS -->
   <section>
-    <h2 class="gradient-orange">Tokenomics</h2>
+    <h2 class="gradient-orange">Tokenomia</h2>
     <div class="tokenomics-grid">
       <div class="token-card orange">
-        <h3>Supply Inicial</h3>
+        <h3>Oferta Inicial</h3>
         <div class="value">99.000.000.000</div>
-        <p>99 bilhões de BITI emitidos no deploy.</p>
+        <p>99 bilhões de BITI emitidos no lançamento.</p>
       </div>
       <div class="token-card cyan">
-        <h3>Supply Máximo</h3>
+        <h3>Oferta Máxima</h3>
         <div class="value">110.000.000.000</div>
         <p>Teto absoluto — nunca haverá mais de 110 bilhões de BITI.</p>
       </div>
       <div class="token-card pink">
         <h3>Distribuição Inicial</h3>
         <div class="value">80% / 20%</div>
-        <p>80% disponível imediatamente. 20% em vesting de 6 meses para o fundador.</p>
+        <p>80% disponível imediatamente. 20% em bloqueio programado de 6 meses para o fundador.</p>
       </div>
       <div class="token-card purple">
         <h3>Taxa de Transação</h3>
         <div class="value">0% → 5% máx</div>
-        <p>Configurável pelo owner. Protegida contra abusos no contrato.</p>
+        <p>Configurável pelo proprietário. Protegida contra abusos no contrato.</p>
       </div>
     </div>
   </section>
@@ -384,14 +426,14 @@
           <p>Transferências podem ser pausadas em caso de incidente de segurança.</p>
         </div>
         <div class="token-card orange">
-          <h3>🔥 Queima (Burn)</h3>
-          <div class="value" style="font-size:1rem;">Supply deflacionário</div>
-          <p>Qualquer holder pode queimar seus tokens, reduzindo o supply total.</p>
+          <h3>🔥 Queima</h3>
+          <div class="value" style="font-size:1rem;">Oferta deflacionária</div>
+          <p>Qualquer titular pode queimar seus tokens, reduzindo a oferta total.</p>
         </div>
         <div class="token-card pink">
-          <h3>⏳ Vesting</h3>
+          <h3>⏳ Bloqueio Programado</h3>
           <div class="value" style="font-size:1rem;">180 dias bloqueados</div>
-          <p>20% do supply do fundador travado por 6 meses. Transparência total.</p>
+          <p>20% da oferta do fundador travada por 6 meses. Transparência total.</p>
         </div>
         <div class="token-card purple">
           <h3>✅ Auditado</h3>
@@ -404,7 +446,7 @@
 
   <!-- ROADMAP -->
   <section>
-    <h2 class="gradient-pink">Roadmap</h2>
+    <h2 class="gradient-pink">Roteiro</h2>
     <div class="roadmap">
       <div class="roadmap-item">
         <div class="roadmap-dot done"></div>
@@ -417,21 +459,28 @@
         <div class="roadmap-dot done"></div>
         <div class="roadmap-content">
           <h3>Fase 2 — Lançamento <span class="badge done">Concluído</span></h3>
-          <p>Deploy na Polygon Mainnet, verificação no Polygonscan, pool de liquidez criado no Uniswap V3 (POL/BITI), token negociável.</p>
+          <p>Implantação na Polygon Mainnet, verificação no Polygonscan, pool de liquidez criado no Uniswap V3 (POL/BITI), token negociável.</p>
         </div>
       </div>
       <div class="roadmap-item">
         <div class="roadmap-dot next"></div>
         <div class="roadmap-content">
           <h3>Fase 3 — Comunidade <span class="badge pending">Em andamento</span></h3>
-          <p>Telegram ativo. Discord, airdrop para early adopters, parcerias DeFi e campanha de marketing em preparação.</p>
+          <p>Telegram e Discord ativos. Airdrop para primeiros apoiadores, parcerias DeFi e campanha de marketing em execução.</p>
+          <ul class="phase-checklist" aria-label="Checklist da Fase 3">
+            <li><span><a href="https://t.me/bititocken" target="_blank" rel="noopener noreferrer">Canal no Telegram ativo</a></span><span class="phase-status done">Concluído</span></li>
+            <li><span><a href="https://discord.gg/CSab49XYKK" target="_blank" rel="noopener noreferrer">Comunidade no Discord</a></span><span class="phase-status done">Concluído</span></li>
+            <li><span><a href="https://x.com/bititocken" target="_blank" rel="noopener noreferrer">Airdrop para primeiros apoiadores</a></span><span class="phase-status progress">Em andamento</span></li>
+            <li><span>Parcerias DeFi</span><span class="phase-status todo">Pendente</span></li>
+            <li><span><a href="https://x.com/bititocken" target="_blank" rel="noopener noreferrer">Campanha de marketing</a></span><span class="phase-status progress">Em andamento</span></li>
+          </ul>
         </div>
       </div>
       <div class="roadmap-item">
         <div class="roadmap-dot"></div>
         <div class="roadmap-content">
           <h3>Fase 4 — Expansão <span class="badge soon">Planejado</span></h3>
-          <p>Staking de BITI, governança DAO, listagem em exchanges centralizadas, auditoria profissional certificada.</p>
+          <p>Programa de bloqueio de BITI, governança DAO, listagem em corretoras centralizadas, auditoria profissional certificada.</p>
         </div>
       </div>
     </div>
@@ -455,10 +504,13 @@
     <h2 class="gradient-cyan">Links Oficiais</h2>
     <div class="links-grid">
       <a href="https://x.com/bititocken" target="_blank" class="link-card">
-        <span class="icon">🐦</span> X / Twitter
+        <span class="icon">🐦</span> X
       </a>
-      <a href="https://t.me/bititocke" target="_blank" class="link-card">
+      <a href="https://t.me/bititocken" target="_blank" class="link-card">
         <span class="icon">💬</span> Telegram
+      </a>
+      <a href="https://discord.gg/CSab49XYKK" target="_blank" class="link-card">
+        <span class="icon">🎮</span> Discord
       </a>
       <a href="https://www.coingecko.com/en/search?query=biti" target="_blank" class="link-card">
         <span class="icon">🦎</span> CoinGecko
@@ -484,7 +536,7 @@
   <!-- DISCLAIMER -->
   <section>
     <div class="disclaimer">
-      ⚠️ <strong>Aviso:</strong> O Biti é um projeto experimental em desenvolvimento, sem garantias de retorno financeiro. Não constitui oferta de investimento. Sempre faça sua própria pesquisa (DYOR) antes de adquirir tokens de criptomoeda. O time não se responsabiliza por perdas.
+      ⚠️ <strong>Aviso:</strong> O Biti é um projeto experimental em desenvolvimento, sem garantias de retorno financeiro. Não constitui oferta de investimento. Sempre faça sua própria pesquisa antes de adquirir tokens de criptomoeda. O time não se responsabiliza por perdas.
     </div>
   </section>
 
@@ -510,8 +562,8 @@
         <div style="display:flex; gap:24px; padding:0 0 32px 72px; position:relative;">
           <div style="position:absolute; left:14px; top:0; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#ffd200,#ff2d78); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; color:#fff; box-shadow:0 0 16px #ffd20088;">2</div>
           <div style="background:#1a1a2e; border:1px solid #ffffff15; border-radius:14px; padding:22px 24px; flex:1;">
-            <h3 style="margin-bottom:8px; font-size:1.1rem;">💎 Compre ETH</h3>
-            <p style="color:#888; font-size:0.95rem;">Você precisa de POL (Polygon) para trocar por BITI e pagar o gas. Compre POL em exchanges como <strong style="color:#fff;">Coinbase</strong>, <strong style="color:#fff;">Binance</strong> ou <strong style="color:#fff;">Mercado Bitcoin</strong> e envie para sua carteira MetaMask na rede Polygon.</p>
+            <h3 style="margin-bottom:8px; font-size:1.1rem;">💎 Compre POL</h3>
+            <p style="color:#888; font-size:0.95rem;">Você precisa de POL (Polygon) para trocar por BITI e pagar a taxa de rede. Compre POL em corretoras como <strong style="color:#fff;">Coinbase</strong>, <strong style="color:#fff;">Binance</strong> ou <strong style="color:#fff;">Mercado Bitcoin</strong> e envie para sua carteira MetaMask na rede Polygon.</p>
           </div>
         </div>
 
@@ -528,10 +580,10 @@
         <div style="display:flex; gap:24px; padding:0 0 32px 72px; position:relative;">
           <div style="position:absolute; left:14px; top:0; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#a259ff,#00e5ff); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; color:#fff; box-shadow:0 0 16px #a259ff88;">4</div>
           <div style="background:#1a1a2e; border:1px solid #ffffff15; border-radius:14px; padding:22px 24px; flex:1;">
-            <h3 style="margin-bottom:8px; font-size:1.1rem;">🔄 Troque ETH por BITI</h3>
-            <p style="color:#888; font-size:0.95rem;">No Uniswap, clique em <strong style="color:#fff;">"Select token"</strong> e cole o endereço do contrato:</p>
+            <h3 style="margin-bottom:8px; font-size:1.1rem;">🔄 Troque POL por BITI</h3>
+            <p style="color:#888; font-size:0.95rem;">No Uniswap, clique em <strong style="color:#fff;">"Select token" (Selecionar token)</strong> e cole o endereço do contrato:</p>
             <div style="background:#0a0a12; border:1px solid #ff6a0044; border-radius:8px; padding:10px 14px; font-family:monospace; font-size:0.8rem; color:var(--yellow); margin-top:10px; word-break:break-all;">0xD7E0CEf1511a7eEF7Fc57998214fB17a270A8b57</div>
-            <p style="color:#888; font-size:0.95rem; margin-top:10px;">Digite a quantidade de ETH e clique em <strong style="color:#fff;">Swap</strong>. Confirme na MetaMask.</p>
+            <p style="color:#888; font-size:0.95rem; margin-top:10px;">Digite a quantidade de POL e clique em <strong style="color:#fff;">Swap</strong> (Trocar). Confirme na MetaMask.</p>
           </div>
         </div>
 
@@ -566,8 +618,8 @@
         <p>Sim, o contrato utiliza OpenZeppelin v5, passou por auditoria interna e todos os testes foram aprovados.</p>
       </div>
       <div class="token-card purple">
-        <h3>Como funciona o vesting?</h3>
-        <p>20% do supply inicial fica bloqueado por 6 meses para o fundador, garantindo transparência e segurança.</p>
+        <h3>Como funciona o bloqueio programado?</h3>
+        <p>20% da oferta inicial fica bloqueada por 6 meses para o fundador, garantindo transparência e segurança.</p>
       </div>
     </div>
   </section>
@@ -585,6 +637,10 @@
         return;
       }
       try {
+        const tokenImage = window.location.protocol === 'file:'
+          ? 'https://raw.githubusercontent.com/Antoniosilva022/biticoin1/main/site/img/biticoin-logo.svg'
+          : new URL('img/biticoin-logo.svg', window.location.href).href;
+
         await window.ethereum.request({
           method: 'wallet_watchAsset',
           params: {
@@ -593,7 +649,7 @@
               address: '0xD7E0CEf1511a7eEF7Fc57998214fB17a270A8b57',
               symbol: 'BITI',
               decimals: 18,
-              image: window.location.origin + '/img/biticoin-logo.svg'
+              image: tokenImage
             }
           }
         });

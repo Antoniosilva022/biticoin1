@@ -318,7 +318,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### Versões futuras
 
 1. Implementar timelock de 48h para mudanças de taxa (BITI-04)
-2. Considerar renunciar ao poder de mint para garantir supply fixo
+2. Considerar renunciar ao poder de mint para garantir supsimply fixo
 3. Considerar auditoria profissional certificada se o projeto crescer
 
 ---

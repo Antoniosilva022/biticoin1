@@ -228,7 +228,7 @@ npm run info:polygon
 2. ✅ **Whitepaper** — PT e EN disponíveis em `site/whitepaper/`
 3. ✅ **Site** — Disponível em `site/index.html`
 4. ⏳ **Liquidez** — Reforçar par BITI/ETH na Polygon (`npm run liquidity:polygon`)
-5. ⏳ **Comunidade** — Discord, Twitter/X, Telegram
+5. 🔄 **Comunidade (em andamento)** — Telegram e Discord ativos; airdrop para primeiros apoiadores e marketing em andamento; parcerias DeFi pendentes
 6. ⏳ **Aplicação** — Submeter formulário CoinGecko/CoinMarketCap com contrato mainnet
 7. ⏳ **Legal** — Consultar advogados para compliance KYC/AML
 
