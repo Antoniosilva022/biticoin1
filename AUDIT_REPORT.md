@@ -33,7 +33,7 @@ A análise identificou **1 vulnerabilidade corrigida**, **3 riscos de informaç�
 ## 2. Classificação de Severidade
 
 | Nível | Descrição |
-|---|---|
+| --- | --- |
 | 🔴 **Crítico** | Perda de fundos, exploração direta, comprometimento total |
 | 🟠 **Alto** | Comportamento incorreto grave, bypass de proteções |
 | 🟡 **Médio** | Comportamento inesperado, bypass parcial |
@@ -49,7 +49,7 @@ A análise identificou **1 vulnerabilidade corrigida**, **3 riscos de informaç�
 ### [CORRIGIDO] BITI-01 — Taxa de transação bypassava o mecanismo de pausa
 
 | Campo | Detalhe |
-|---|---|
+| --- | --- |
 | **Severidade** | 🟠 Alto |
 | **Status** | ✅ Corrigido em 16/04/2026 |
 | **Localização** | `Biticoin.sol` — função `_update()`, linha da cobrança de taxa |
@@ -59,11 +59,13 @@ A análise identificou **1 vulnerabilidade corrigida**, **3 riscos de informaç�
 A cobrança da taxa de transação era realizada via chamada direta `ERC20._update(from, feeRecipient, fee)`, que acessa a implementação base do ERC20 sem passar pelo `ERC20Pausable`. Isso significa que mesmo com o contrato pausado (estado de emergência), a portion da taxa ainda era transferida, violando a garantia do `pause()`.
 
 **Código vulnerável (antes da correção):**
+
 ```solidity
 ERC20._update(from, feeRecipient, fee); // taxa direta, sem double-pause
 ```
 
 **Código corrigido:**
+
 ```solidity
 super._update(from, feeRecipient, fee); // taxa também passa pelo pause check
 ```
@@ -75,7 +77,7 @@ super._update(from, feeRecipient, fee); // taxa também passa pelo pause check
 ### BITI-02 — Centralização: owner pode pausar todos os holders
 
 | Campo | Detalhe |
-|---|---|
+| --- | --- |
 | **Severidade** | ℹ️ Informativo (by design) |
 | **Status** | Aceito com disclosure obrigatório |
 | **Localização** | Funções `pause()` e `unpause()` |
@@ -85,6 +87,7 @@ super._update(from, feeRecipient, fee); // taxa também passa pelo pause check
 O owner do contrato pode chamar `pause()` a qualquer momento, bloqueando **todas** as transferências de todos os holders. Enquanto o mecanismo é projetado para emergências (ex: exploit descoberto), representa um poder unilateral significativo.
 
 **Recomendação:**  
+
 - Documentar claramente no whitepaper e no site
 - Considerar em versão futura um timelock (ex: 48h de espera antes de ativar pausa)
 - Considerar transferência de ownership para multisig (Gnosis Safe) após lançamento
@@ -94,7 +97,7 @@ O owner do contrato pode chamar `pause()` a qualquer momento, bloqueando **todas
 ### BITI-03 — Centralização: owner pode mintar até o teto de 110B
 
 | Campo | Detalhe |
-|---|---|
+| --- | --- |
 | **Severidade** | ℹ️ Informativo (by design) |
 | **Status** | Aceito com disclosure obrigatório |
 | **Localização** | Função `mint()` |
@@ -104,6 +107,7 @@ O owner do contrato pode chamar `pause()` a qualquer momento, bloqueando **todas
 O owner pode emitir até 11 bilhões de tokens adicionais (diferença entre 99B inicial e 110B de teto), diluindo os holders existentes sem necessidade de aprovação. O teto é um controle importante, mas o poder de mint unilateral pode afetar a confiança do mercado.
 
 **Recomendação:**  
+
 - Documentar claramente a capacidade de mint residual
 - Considerar burn do poder de mint (`renounceOwnership` da função mint) após lançamento se quiser supply fixo
 - Ou implementar voting/DAO para aprovação de novos mints
@@ -113,7 +117,7 @@ O owner pode emitir até 11 bilhões de tokens adicionais (diferença entre 99B 
 ### BITI-04 — Centralização: taxa pode ser alterada sem aviso
 
 | Campo | Detalhe |
-|---|---|
+| --- | --- |
 | **Severidade** | 🔵 Baixo |
 | **Status** | Mitigado parcialmente |
 | **Localização** | Função `setTransferFee()` |
@@ -123,6 +127,7 @@ O owner pode emitir até 11 bilhões de tokens adicionais (diferença entre 99B 
 O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holders. Um usuário pode submeter uma transação esperando 0% de taxa e ser cobrado 5% se o owner alterar a taxa no mesmo bloco (front-running pelo owner).
 
 **Recomendação:**  
+
 - Implementar um timelock de 24–48h antes de novos valores de taxa entrarem em vigor
 - Ou emitir evento com antecedência antes de aplicar (já existe o evento `TransferFeeUpdated`, mas é emitido no momento da mudança)
 
@@ -133,7 +138,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### 4.1 Reentrância
 
 | Vetor | Status |
-|---|---|
+| --- | --- |
 | Chamadas externas em `transfer()` / `transferFrom()` | ✅ Não aplicável — ERC20 não envia ETH |
 | Chamadas externas em `releaseVesting()` | ✅ Seguro — `vestingReleased = true` antes da transferência (CEI pattern) |
 | Callbacks de contratos receptores | ✅ Não implementado (sem `onERC20Received`) |
@@ -145,7 +150,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### 4.2 Overflow e Underflow
 
 | Operação | Status |
-|---|---|
+| --- | --- |
 | `(INITIAL_SUPPLY * 80) / 100` no constructor | ✅ Seguro — Solidity 0.8 protege nativamente |
 | `(value * transferFeeBps) / 10000` em `_update()` | ✅ Seguro — resultado nunca excede `value` |
 | `totalSupply() + amount` em `mint()` | ✅ Seguro — reverteria antes de overflow |
@@ -158,7 +163,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### 4.3 Manipulação de Taxa
 
 | Vetor | Status |
-|---|---|
+| --- | --- |
 | Taxa acima de 5% | ✅ Bloqueado por `require(feeBps <= MAX_FEE_BPS)` |
 | Taxa negativa | ✅ Impossível — `uint256` não aceita negativos |
 | Taxa em mint/burn | ✅ Excluído — `from == address(0)` ou `to == address(0)` |
@@ -174,7 +179,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### 4.4 Controle de Acesso
 
 | Função | Proteção |
-|---|---|
+| --- | --- |
 | `mint()` | `onlyOwner` ✅ |
 | `pause()` / `unpause()` | `onlyOwner` ✅ |
 | `releaseVesting()` | `onlyOwner` ✅ |
@@ -190,7 +195,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### 4.5 Conformidade ERC-20
 
 | Requisito | Status |
-|---|---|
+| --- | --- |
 | `name()` | ✅ "Biti" |
 | `symbol()` | ✅ "BITI" |
 | `decimals()` | ✅ 18 (padrão OpenZeppelin) |
@@ -211,7 +216,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### 5.1 Testes Funcionais — `test/Biticoin.test.js`
 
 | Teste | Resultado |
-|---|---|
+| --- | --- |
 | Nome e símbolo corretos | ✅ |
 | 80% do supply para owner no constructor | ✅ |
 | 20% em vesting no contrato | ✅ |
@@ -239,7 +244,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### 5.2 Testes de Vulnerabilidade — `test/VulnerabilityAudit.test.js`
 
 | Categoria | Testes | Resultado |
-|---|---|---|
+| --- | --- | --- |
 | [V-01] Reentrância no vesting | 2 | ✅ |
 | [V-02] Controle de acesso — funções admin | 6 | ✅ |
 | [V-03] Bypass de mecanismo de pause | 5 | ✅ |
@@ -252,12 +257,12 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 | [V-10] Segurança de approve/transferFrom | 4 | ✅ |
 | [V-11] Riscos de centralização (renounceOwnership) | 4 | ✅ |
 | [V-12] Transferência acidental ao contrato | 2 | ✅ |
-| **Subtotal** | **47/47 ✅** | |
+| **Subtotal** | **47/47 ✅** | - |
 
 ### 5.3 Resultado Consolidado
 
 | Suíte | Testes | Status |
-|---|---|---|
+| --- | --- | --- |
 | Funcionais | 25 | ✅ 25/25 |
 | Vulnerabilidade | 47 | ✅ 47/47 |
 | **Total** | **72** | **✅ 72/72** |
@@ -267,7 +272,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ## 6. Resumo dos Achados
 
 | ID | Título | Severidade | Status |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | BITI-01 | Taxa bypassava mecanismo de pausa | 🟠 Alto | ✅ Corrigido |
 | BITI-02 | Owner pode pausar todos os holders | ℹ️ Informativo | Aceito c/ disclosure |
 | BITI-03 | Owner pode mintar até 110B (diluição) | ℹ️ Informativo | Aceito c/ disclosure |
@@ -282,7 +287,7 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ### Auditoria de Vulnerabilidades Automatizada (25/04/2026)
 
 | Vetor | Resultado |
-|---|---|
+| --- | --- |
 | Reentrância (V-01) | ✅ Não vulnerável |
 | Controle de acesso (V-02) | ✅ Não vulnerável |
 | Bypass de pause (V-03) | ✅ Não vulnerável |
@@ -301,17 +306,20 @@ O owner pode aumentar a taxa de 0% para 5% instantaneamente, sem avisar os holde
 ## 7. Recomendações Prioritárias
 
 ### Antes do deploy em produção (Polygon)
+
 1. ✅ Corrigir BITI-01 — **feito**
 2. Confirmar que a chave privada do owner será armazenada com segurança (hardware wallet)
 
 ### Após deploy em produção (Polygon)
-3. Transferir ownership para uma **multisig wallet** (Gnosis Safe com 2/3 ou 3/5 signatários)
-4. Documentar os riscos de centralização no whitepaper público
+
+1. Transferir ownership para uma **multisig wallet** (Gnosis Safe com 2/3 ou 3/5 signatários)
+2. Documentar os riscos de centralização no whitepaper público
 
 ### Versões futuras
-5. Implementar timelock de 48h para mudanças de taxa (BITI-04)
-6. Considerar renunciar ao poder de mint para garantir supply fixo
-7. Considerar auditoria profissional certificada se o projeto crescer
+
+1. Implementar timelock de 48h para mudanças de taxa (BITI-04)
+2. Considerar renunciar ao poder de mint para garantir supply fixo
+3. Considerar auditoria profissional certificada se o projeto crescer
 
 ---
 
@@ -328,11 +336,11 @@ Os riscos existentes são **intencionais e comuns** em tokens no estágio inicia
 ## 9. Assinaturas
 
 | Função | Nome | Data |
-|---|---|---|
+| --- | --- | --- |
 | Auditor de Código (Análise Estática) | GitHub Copilot | 16 de abril de 2026 |
 | Auditor Manual | Antonio Silva Gomes | 16 de abril de 2026 |
 | Revisão — Testes de Vulnerabilidade | Antonio Silva Gomes | 25 de abril de 2026 |
 
 ---
 
-*Relatório criado em 16 de abril de 2026 — Última atualização: 25 de abril de 2026 — Biticoin Project*
+Relatório criado em 16 de abril de 2026. Última atualização: 25 de abril de 2026. Biticoin Project.
