@@ -1,55 +1,64 @@
-import hre from "hardhat";
-const { ethers } = hre;
+import { network } from "hardhat";
 
 async function main() {
+  const connection = await network.create();
+  const { ethers, networkName } = connection;
+
   const configs = {
     mainnet: {
       label: "mainnet",
-      rpcUrl: process.env.MAINNET_RPC_URL || "https://eth.llamarpc.com",
       symbol: "ETH",
-      minBalance: 0.01,
+      minBalance: "0.01",
       fundingHint: "💡 Deposite ETH via Binance, Coinbase, etc."
     },
     polygon: {
       label: "polygon",
-      rpcUrl: process.env.POLYGON_RPC_URL || "https://polygon-bor-rpc.publicnode.com",
       symbol: "POL",
-      minBalance: 1,
+      minBalance: "1",
       fundingHint: "💡 Deposite POL via Binance, Coinbase, etc."
     },
     polygonAmoy: {
       label: "polygonAmoy",
-      rpcUrl: process.env.POLYGON_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology",
       symbol: "AmoyPOL",
-      minBalance: 0.1,
+      minBalance: "0.1",
       fundingHint: "💡 Faucet: https://faucet.polygon.technology/"
     }
   };
 
-  const network = configs[hre.network.name] || configs.polygon;
+  const config = configs[networkName];
 
-  console.log(`💰 Verificando saldo na rede: ${network.label}\n`);
+  if (!config) {
+    throw new Error(`Rede não suportada para consulta de saldo: ${networkName}`);
+  }
 
-  const provider = new ethers.JsonRpcProvider(network.rpcUrl);
-  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+  if (networkName === "polygon" && (await ethers.provider.getNetwork()).chainId !== 137n) {
+    throw new Error("A rede conectada não é Polygon Mainnet. Consulta interrompida.");
+  }
 
-  console.log("📋 Endereço:", wallet.address);
+  if (networkName === "polygonAmoy" && (await ethers.provider.getNetwork()).chainId !== 80002n) {
+    throw new Error("A rede conectada não é Polygon Amoy. Consulta interrompida.");
+  }
 
-  try {
-    const balance = await provider.getBalance(wallet.address);
-    const formattedBalance = ethers.formatEther(balance);
+  const [wallet] = await ethers.getSigners();
 
-    console.log(`💰 Saldo: ${formattedBalance} ${network.symbol}`);
+  if (!wallet) {
+    throw new Error("Nenhuma carteira configurada. Defina PRIVATE_KEY no .env.");
+  }
 
-    if (parseFloat(formattedBalance) < network.minBalance) {
-      console.log("\n❌ Saldo insuficiente para deploy!");
-      console.log(network.fundingHint);
-      console.log("📋 Endereço:", wallet.address);
-    } else {
-      console.log("\n✅ Saldo suficiente para deploy!");
-    }
-  } catch (error) {
-    console.error("❌ Erro ao verificar saldo:", error.message);
+  const address = await wallet.getAddress();
+  const balance = await ethers.provider.getBalance(address);
+  const formattedBalance = ethers.formatEther(balance);
+
+  console.log(`💰 Verificando saldo na rede: ${config.label}\n`);
+  console.log("📋 Endereço:", address);
+  console.log(`💰 Saldo: ${formattedBalance} ${config.symbol}`);
+
+  if (balance < ethers.parseEther(config.minBalance)) {
+    console.log("\n❌ Saldo insuficiente para deploy!");
+    console.log(config.fundingHint);
+    console.log("📋 Endereço:", address);
+  } else {
+    console.log("\n✅ Saldo suficiente para deploy!");
   }
 }
 

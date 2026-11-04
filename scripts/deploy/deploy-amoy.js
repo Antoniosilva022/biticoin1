@@ -16,7 +16,7 @@ async function main() {
   console.log("🚀 Deploy na Polygon Amoy (testnet)...\n");
 
   const provider = new ethers.JsonRpcProvider(
-    process.env.POLYGON_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology"
+    process.env.POLYGON_AMOY_RPC_URL || "https://polygon-amoy-bor-rpc.publicnode.com"
   );
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
