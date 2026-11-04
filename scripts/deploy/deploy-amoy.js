@@ -1,51 +1,61 @@
-
-import { network } from "hardhat";
+import hre from "hardhat";
+const { ethers } = hre;
 
 async function main() {
-  if (process.env.CONFIRM_AMOY_DEPLOY !== "YES") {
-    throw new Error("Deploy bloqueado: confirme CONFIRM_AMOY_DEPLOY=YES");
+  if (hre.network.name !== "polygonAmoy") {
+    console.error("❌ Operação bloqueada: este repositório está em modo Polygon-only.");
+    console.error("   Use scripts com --network polygonAmoy.");
+    process.exit(1);
   }
 
-  const { ethers } = await network.create();
-
-  const [deployer] = await ethers.getSigners();
-
-  if (!deployer) {
-    throw new Error("Nenhuma carteira configurada para Polygon Amoy.");
+  if (!process.env.PRIVATE_KEY) {
+    console.error("❌ PRIVATE_KEY não definida no .env");
+    process.exit(1);
   }
 
-  const founder = deployer.address;
-  const balance = await ethers.provider.getBalance(founder);
+  console.log("🚀 Deploy na Polygon Amoy (testnet)...\n");
 
-  console.log("Rede: Polygon Amoy");
-  console.log("Carteira:", founder);
-  console.log("Saldo:", ethers.formatEther(balance), "AmoyPOL");
+  const provider = new ethers.JsonRpcProvider(
+    process.env.POLYGON_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology"
+  );
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
-  if (balance < ethers.parseEther("0.1")) {
-    throw new Error("Saldo insuficiente de AmoyPOL.");
+  console.log("📋 Carteira:", wallet.address);
+
+  const balance = await provider.getBalance(wallet.address);
+  const balanceInPol = parseFloat(ethers.formatEther(balance));
+  console.log("💰 Saldo:", balanceInPol, "AmoyPOL");
+
+  if (balanceInPol < 0.1) {
+    console.log(`\n❌ Saldo insuficiente: ${balanceInPol} AmoyPOL`);
+    console.log("💡 Pegue tokens de teste em: https://faucet.polygon.technology/");
+    console.log("📋", wallet.address);
+    process.exit(1);
   }
 
-  console.log("\nPreparando BITI 2.0...");
+  console.log("✅ Saldo OK! Iniciando deploy...\n");
 
-  const BiticoinV2 = await ethers.getContractFactory("BiticoinV2");
+  const Biticoin = await ethers.getContractFactory("Biticoin");
+  const biticoin = await Biticoin.deploy();
 
-  const token = await BiticoinV2.deploy(founder);
+  console.log("⏳ Aguardando confirmação na blockchain...");
+  await biticoin.waitForDeployment();
 
-  console.log("Aguardando confirmação...");
-  await token.waitForDeployment();
+  const address = await biticoin.getAddress();
+  const totalSupply = await biticoin.totalSupply();
 
-  const address = await token.getAddress();
+  console.log("\n🎉 DEPLOY CONCLUÍDO NA POLYGON AMOY!");
+  console.log("📋 Endereço do contrato:", address);
+  console.log("💰 Total Supply:", ethers.formatEther(totalSupply), "BITI");
+  console.log("🔍 Explorer: https://amoy.polygonscan.com/address/" + address);
 
-  console.log("\nBITI 2.0 PUBLICADA NA POLYGON AMOY!");
-  console.log("Fundador:", await token.founder());
-  console.log("Contrato:", address);
-  console.log("Supply:", ethers.formatEther(await token.totalSupply()));
-  console.log("Explorer:");
-  console.log("https://amoy.polygonscan.com/address/" + address);
+  console.log("\n📝 Próximos passos:");
+  console.log("1. Atualize TOKEN_ADDRESS_AMOY no .env com:", address);
+  console.log("   Opcionalmente mantenha TOKEN_ADDRESS como fallback.");
+  console.log("2. Rode: npm run transfer:90:amoy");
+  console.log("3. Verifique o contrato: npm run verify:amoy");
 }
 
-main().catch((error) => {
-  console.error("Erro no deploy:", error);
-  process.exitCode = 1;
-});
-
+main()
+  .then(() => process.exit(0))
+  .catch((error) => { console.error("❌ Erro:", error.message); process.exit(1); });
