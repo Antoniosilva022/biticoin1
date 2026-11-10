@@ -4,12 +4,13 @@
 //
 // Requer no .env: TOKEN_ADDRESS_* da rede alvo ou TOKEN_ADDRESS como fallback
 
-import hre from "hardhat";
-const { ethers } = hre;
+import { network } from "hardhat";
 import { resolveTokenAddress } from "./token-address.js";
 
 async function main() {
-  const { tokenAddress, sourceEnvVar } = resolveTokenAddress(hre.network.name);
+  const connection = await network.create();
+  const { ethers, networkName } = connection;
+  const { tokenAddress, sourceEnvVar } = resolveTokenAddress(networkName);
 
   const token = await ethers.getContractAt("Biticoin", tokenAddress);
 
@@ -39,7 +40,7 @@ async function main() {
   const vestingDate = new Date(Number(vestingTime) * 1000).toLocaleDateString("pt-BR");
 
   console.log(`📋 Endereço:       ${tokenAddress}`);
-  console.log(`🌐 Rede:           ${hre.network.name}`);
+  console.log(`🌐 Rede:           ${networkName}`);
   console.log(`🧭 Env utilizado:  ${sourceEnvVar}`);
   console.log(`🔤 Nome:           ${name} (${symbol})`);
   console.log(`🔢 Decimais:       ${decimals}`);
@@ -55,11 +56,11 @@ async function main() {
   console.log(`   Liberação:      ${vestingDate}`);
   console.log(`   Liberado:       ${vestingReleased ? "Sim ✅" : "Não (ainda travado)"}`);
 
-  const explorerBase = hre.network.name === "mainnet"
+  const explorerBase = networkName === "mainnet"
     ? `https://etherscan.io/address/${tokenAddress}`
-    : hre.network.name === "polygon"
+    : networkName === "polygon"
         ? `https://polygonscan.com/address/${tokenAddress}`
-        : hre.network.name === "polygonAmoy"
+        : networkName === "polygonAmoy"
           ? `https://amoy.polygonscan.com/address/${tokenAddress}`
           : `https://polygonscan.com/address/${tokenAddress}`;
   console.log(`\n🔍 Explorer:       ${explorerBase}`);
